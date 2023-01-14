@@ -1,0 +1,17 @@
+{
+    "fmt": {
+        "options": {
+            "lineWidth": 70,
+            "indentWidth": 4
+        }
+    },
+    "lint": {
+        "rules": {
+            "include": [
+                "explicit-function-return-type",
+                "eqeqeq",
+                "default-param-last"
+            ]
+        }
+    }
+}
