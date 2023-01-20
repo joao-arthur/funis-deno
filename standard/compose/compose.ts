@@ -1073,6 +1073,25 @@ export function compose<
     fn1: (arg1: T1) => T2,
 ): (initialValue: T1) => T32;
 
+/**
+ * # compose
+ *
+ * Returns a function that apply the result of each function to the next one in the opposite order they are defined.
+ *
+ * > Typescript does not infer the type of the function arguments as you would expect.
+ * > You have to explicit type all but the first function argument 😰.
+ *
+ * ## Example
+ *
+ * ```ts
+ * compose(
+ *     value => `${value} is the result` // '5 is the result'
+ *     (value: number) => value / 3, // 5
+ *     (value: number) => value - 5, // 15
+ *     (value: number) => value * 2, // 20
+ * )(10) // '5 is the result'
+ * ```
+ */
 export function compose(...fns: readonly unknownFn[]): unknownFn {
     return (initialParam) =>
         fns.reduceRight((curr, fn) => fn(curr), initialParam);
