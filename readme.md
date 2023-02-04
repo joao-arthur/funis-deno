@@ -10,7 +10,7 @@ in a wide range of applications. It is a helper for `modern day js`.
 
 [![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/funis)
 [![CI](https://github.com/Joao-Arthur/funis-deno/actions/workflows/ci.yaml/badge.svg)](https://github.com/Joao-Arthur/funis-deno/actions/workflows/ci.yaml)
-[![codecov](https://codecov.io/gh/Joao-Arthur/funis-deno/branch/main/graph/badge.svg?token=9FI5PDDFB3)](https://codecov.io/gh/Joao-Arthur/funis-deno)
+[![codecov](https://codecov.io/gh/Joao-Arthur/funis-deno/branch/main/graph/badge.svg?token=E29QWHVC0A)](https://codecov.io/gh/Joao-Arthur/funis-deno)
 
 ## What it can offer
 
