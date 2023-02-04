@@ -1,9 +1,14 @@
-name: CI
+name: CI Pull Request
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 
 permissions:
   contents: read
@@ -20,4 +25,3 @@ jobs:
       - run: deno fmt --check
       - run: deno lint
       - run: deno test
-      - uses: codecov/codecov-action@v3
