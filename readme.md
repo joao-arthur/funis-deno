@@ -8,12 +8,14 @@ Optionated type-safe utility library. Partially inspired by
 _funis_ provides a set of modularized basic operations that are common
 in a wide range of applications. It is a helper for `modern day js`.
 
+[![deno land](http://img.shields.io/badge/available%20on-deno.land/x-lightgrey.svg?logo=deno&labelColor=black)](https://deno.land/x/funis)
+
 ## What it can offer
 
 - Modularized functions
 - Fully typed
 - No side effects (The exceptions are highlighted in the
-  [docs](https://joao-arthur.github.io/funis/))
+  [docs](https://joao-arthur.github.io/funis-docs/))
 
 ## What it can't offer
 
