@@ -3,7 +3,9 @@ import { entries } from "./entries.ts";
 
 Deno.test("entries", () => {
     assertEquals(entries(new Map()), []);
+});
 
+Deno.test("entries", () => {
     assertEquals(
         entries(
             new Map([

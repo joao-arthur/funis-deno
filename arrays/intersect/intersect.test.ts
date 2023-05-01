@@ -4,13 +4,15 @@ import { intersect } from "./intersect.ts";
 Deno.test("intersect", () => {
     assertEquals(intersect([[1, 2, 3], [4, 5, 6]]), []);
     assertEquals(intersect([[false, true], []]), []);
-    assertEquals(intersect([[""]]), [""]);
+});
 
+Deno.test("intersect", () => {
+    assertEquals(intersect([[""]]), [""]);
     assertEquals(intersect([[1]]), [1]);
-    assertEquals(intersect([[4, 5, 6], [5, 6, 7]]), [
-        5,
-        6,
-    ]);
+});
+
+Deno.test("intersect", () => {
+    assertEquals(intersect([[4, 5, 6], [5, 6, 7]]), [5, 6]);
     assertEquals(
         intersect([
             ["George", "Paul", "John", "Ringo", "Ringo"],

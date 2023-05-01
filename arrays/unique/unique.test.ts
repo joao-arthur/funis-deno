@@ -3,9 +3,7 @@ import { unique } from "./unique.ts";
 
 Deno.test("unique", () => {
     assertEquals(unique([]), []);
-
     assertEquals(unique([1]), [1]);
-
     const symbolValue = Symbol(1);
     assertEquals(
         unique([

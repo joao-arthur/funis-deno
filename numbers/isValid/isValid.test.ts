@@ -5,7 +5,9 @@ Deno.test("isValid", () => {
     assertEquals(isValid(Number.NaN), false);
     assertEquals(isValid(undefined), false);
     assertEquals(isValid(null), false);
+});
 
+Deno.test("isValid", () => {
     assertEquals(isValid(1), true);
     assertEquals(isValid(-1), true);
     assertEquals(isValid(0), true);

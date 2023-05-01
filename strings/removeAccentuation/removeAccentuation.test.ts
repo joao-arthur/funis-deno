@@ -18,7 +18,9 @@ Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("ø"), "");
     assertEquals(removeAccentuation("ǘ"), "");
     assertEquals(removeAccentuation("ǜ"), "");
+});
 
+Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("ÁÉÍÓÚ"), "");
     assertEquals(removeAccentuation("ÀÈÌÒÙ"), "");
     assertEquals(removeAccentuation("ÃẼĨÕŨ"), "");
@@ -35,7 +37,9 @@ Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("Ø"), "");
     assertEquals(removeAccentuation("Ǘ"), "");
     assertEquals(removeAccentuation("Ǜ"), "");
+});
 
+Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("ćǵḱĺḿńṕŕśẃýź"), "");
     assertEquals(removeAccentuation("ĉĝĥĵŝŵŷẑ"), "");
     assertEquals(removeAccentuation("čňřšž"), "");
@@ -50,7 +54,9 @@ Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("ģ"), "");
     assertEquals(removeAccentuation("ğ"), "");
     assertEquals(removeAccentuation("ż"), "");
+});
 
+Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("ĆǴḰĹḾŃṔŔŚẂÝŹ"), "");
     assertEquals(removeAccentuation("ĈĜĤĴŜŴŶẐ"), "");
     assertEquals(removeAccentuation("ČĎŇŘŠŤŽ"), "");
@@ -65,7 +71,9 @@ Deno.test("removeAccentuation", () => {
     assertEquals(removeAccentuation("Ğ"), "");
     assertEquals(removeAccentuation("Ľ"), "");
     assertEquals(removeAccentuation("Ż"), "");
+});
 
+Deno.test("removeAccentuation", () => {
     assertEquals(
         removeAccentuation(
             "abcdefghijklmnopqrstuvwyxz0123456789",

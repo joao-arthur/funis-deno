@@ -3,7 +3,8 @@ import { keys } from "./keys.ts";
 
 Deno.test("keys", () => {
     assertEquals(keys(new Map()), []);
-
+});
+Deno.test("keys", () => {
     assertEquals(
         keys(
             new Map([

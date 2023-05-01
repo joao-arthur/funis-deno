@@ -4,7 +4,9 @@ import { combinations } from "./combinations.ts";
 Deno.test("combinations", () => {
     assertEquals(combinations([]), []);
     assertEquals(combinations([10]), []);
+});
 
+Deno.test("combinations", () => {
     assertEquals(combinations([10, 20]), [[10, 20]]);
     assertEquals(combinations([10, 20, 30, 40, 50]), [
         [10, 20],

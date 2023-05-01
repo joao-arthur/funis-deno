@@ -5,12 +5,14 @@ Deno.test("once", () => {
     assertEquals(
         once(
             ["Axl", "Slash", "Duff", "Buckethead"],
-            (item) => item === "Roses",
+            (item) => item.indexOf("Roses")>=0,
         ),
         false,
     );
     assertEquals(once([5, 3, 1], (item) => item < 0), false);
+});
 
+Deno.test("once", () => {
     assertEquals(
         once(
             ["Axl", "Slash", "Duff", "Buckethead"],
@@ -19,7 +21,9 @@ Deno.test("once", () => {
         true,
     );
     assertEquals(once([5, 3, 1], (item) => item > 4), true);
+});
 
+Deno.test("once", () => {
     assertEquals(
         once(
             ["Axl", "Slash", "Duff", "Buckethead"],

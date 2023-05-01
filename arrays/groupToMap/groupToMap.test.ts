@@ -3,7 +3,9 @@ import { groupToMap } from "./groupToMap.ts";
 
 Deno.test("groupToMap", () => {
     assertEquals(groupToMap([], (item) => item), new Map());
+});
 
+Deno.test("groupToMap", () => {
     assertEquals(
         groupToMap([1, 2, 3], (item) => item),
         new Map([[1, [1]], [2, [2]], [3, [3]]]),

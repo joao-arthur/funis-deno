@@ -3,12 +3,16 @@ import { intersect } from "./intersect.ts";
 
 Deno.test("intersect", () => {
     assertEquals(intersect([]), {});
+});
 
+Deno.test("intersect", () => {
     assertEquals(
         intersect([{ name: "Steve Harris", country: "UK" }]),
         { name: "Steve Harris", country: "UK" },
     );
+});
 
+Deno.test("intersect", () => {
     assertEquals(
         intersect(
             [

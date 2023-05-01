@@ -1,9 +1,7 @@
 {
     "fmt": {
-        "options": {
-            "lineWidth": 70,
-            "indentWidth": 4
-        }
+        "lineWidth": 70,
+        "indentWidth": 4
     },
     "lint": {
         "rules": {

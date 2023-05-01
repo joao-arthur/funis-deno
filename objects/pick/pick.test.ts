@@ -4,7 +4,9 @@ import { pick } from "./pick.ts";
 Deno.test("pick", () => {
     assertEquals(pick({}, []), {});
     assertEquals(pick({}, ["animal", "species", "age"]), {});
+});
 
+Deno.test("pick", () => {
     assertEquals(
         pick(
             { animal: "dog", species: "Canis lupus", age: 5 },

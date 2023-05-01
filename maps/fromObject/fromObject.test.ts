@@ -3,7 +3,9 @@ import { fromObject } from "./fromObject.ts";
 
 Deno.test("fromObject", () => {
     assertEquals(fromObject({}), new Map([]));
+});
 
+Deno.test("fromObject", () => {
     assertEquals(
         fromObject({
             Paul: "Bass",
@@ -16,6 +18,6 @@ Deno.test("fromObject", () => {
             ["John", "Guitar"],
             ["George", "Guitar"],
             ["Ringo", "Drums"],
-        ]),
+        ] as const),
     );
 });

@@ -3,7 +3,9 @@ import { values } from "./values.ts";
 
 Deno.test("values", () => {
     assertEquals(values(new Map()), []);
+});
 
+Deno.test("values", () => {
     assertEquals(
         values(
             new Map([

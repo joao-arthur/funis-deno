@@ -3,7 +3,9 @@ import { last } from "./last.ts";
 
 Deno.test("last", () => {
     assertEquals(last(new Map()), undefined);
+});
 
+Deno.test("last", () => {
     assertEquals(
         last(
             new Map([

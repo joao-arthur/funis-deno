@@ -10,7 +10,6 @@ Deno.test("pipe", () => {
         )(100),
         "55.55",
     );
-
     assertEquals(
         pipe(
             (num: number) => num - 90,

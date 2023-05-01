@@ -3,7 +3,9 @@ import { groupToArray } from "./groupToArray.ts";
 
 Deno.test("groupToArray", () => {
     assertEquals(groupToArray([], (item) => item), []);
+});
 
+Deno.test("groupToArray", () => {
     assertEquals(
         groupToArray([1, 2, 3], (item) => item),
         [[1], [2], [3]],

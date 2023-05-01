@@ -10,7 +10,6 @@ Deno.test("compose", () => {
         )(100),
         "55.55",
     );
-
     assertEquals(
         compose(
             (num) => num + 10,

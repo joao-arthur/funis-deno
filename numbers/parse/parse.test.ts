@@ -2,17 +2,30 @@ import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
 import { parse } from "./parse.ts";
 
 Deno.test("parse", () => {
+    assertEquals(parse("US$4", { prefix: "R$" }), undefined);
+    assertEquals(parse("R$-6", { prefix: "rem" }), undefined);
+    assertEquals(parse("@-1", { prefix: "km/h" }), undefined);
+    assertEquals(parse("4px", { suffix: "rem" }), undefined);
+    assertEquals(parse("-6em", { suffix: "rem" }), undefined);
+    assertEquals(parse("-1m/s", { suffix: "km/h" }), undefined);
+});
+
+Deno.test("parse", () => {
     assertEquals(parse("$100.00", { prefix: "$" }), 100.00);
     assertEquals(parse("US$0", { prefix: "US$" }), 0);
     assertEquals(parse("R$-1.53", { prefix: "R$" }), -1.53);
     assertEquals(parse("^1.4", { prefix: "^" }), 1.4);
+});
 
+Deno.test("parse", () => {
     assertEquals(parse("100px", { suffix: "px" }), 100);
     assertEquals(parse("0px", { suffix: "px" }), 0);
     assertEquals(parse("-1.53m/s", { suffix: "m/s" }), -1.53);
     assertEquals(parse("1.4kº", { suffix: "kº" }), 1.4);
     assertEquals(parse("74%", { suffix: "%" }), 74);
+});
 
+Deno.test("parse", () => {
     assertEquals(
         parse(
             "width: 100px",
@@ -27,15 +40,9 @@ Deno.test("parse", () => {
         ),
         -1.53,
     );
+});
 
-    assertEquals(parse("US$4", { prefix: "R$" }), undefined);
-    assertEquals(parse("R$-6", { prefix: "rem" }), undefined);
-    assertEquals(parse("@-1", { prefix: "km/h" }), undefined);
-
-    assertEquals(parse("4px", { suffix: "rem" }), undefined);
-    assertEquals(parse("-6em", { suffix: "rem" }), undefined);
-    assertEquals(parse("-1m/s", { suffix: "km/h" }), undefined);
-
+Deno.test("parse", () => {
     assertEquals(
         parse(
             "US$4 donnut",
@@ -50,7 +57,9 @@ Deno.test("parse", () => {
         ),
         undefined,
     );
+});
 
+Deno.test("parse", () => {
     assertEquals(
         parse(
             "speed: -4px",
@@ -58,8 +67,6 @@ Deno.test("parse", () => {
         ),
         undefined,
     );
-    assertEquals(parse(":2em", { prefix: ":" }), undefined);
-
     assertEquals(
         parse(
             "speed: -4px",
@@ -67,8 +74,11 @@ Deno.test("parse", () => {
         ),
         undefined,
     );
+    assertEquals(parse(":2em", { prefix: ":" }), undefined);
     assertEquals(parse(":2em", { suffix: "em" }), undefined);
+});
 
+Deno.test("parse", () => {
     assertEquals(
         parse("I see", { prefix: "I see" }),
         undefined,

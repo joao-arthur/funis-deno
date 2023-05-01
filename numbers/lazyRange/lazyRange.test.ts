@@ -11,6 +11,18 @@ Deno.test("lazyRange", () => {
 });
 
 Deno.test("lazyRange", () => {
+    const itter = lazyRange(2, 5.3, 0.5);
+    assertEquals(itter.next(), { done: false, value: 2 });
+    assertEquals(itter.next(), { done: false, value: 2.5 });
+    assertEquals(itter.next(), { done: false, value: 3 });
+    assertEquals(itter.next(), { done: false, value: 3.5 });
+    assertEquals(itter.next(), { done: false, value: 4 });
+    assertEquals(itter.next(), { done: false, value: 4.5 });
+    assertEquals(itter.next(), { done: false, value: 5 });
+    assertEquals(itter.next(), { done: true, value: undefined });
+});
+
+Deno.test("lazyRange", () => {
     const itter = lazyRange(-1, 2);
     const values: number[] = [];
     for (const value of itter) {
@@ -31,18 +43,6 @@ Deno.test("lazyRange", () => {
         values.push(value);
     }
     assertEquals(values, []);
-});
-
-Deno.test("lazyRange", () => {
-    const itter = lazyRange(2, 5.3, 0.5);
-    assertEquals(itter.next(), { done: false, value: 2 });
-    assertEquals(itter.next(), { done: false, value: 2.5 });
-    assertEquals(itter.next(), { done: false, value: 3 });
-    assertEquals(itter.next(), { done: false, value: 3.5 });
-    assertEquals(itter.next(), { done: false, value: 4 });
-    assertEquals(itter.next(), { done: false, value: 4.5 });
-    assertEquals(itter.next(), { done: false, value: 5 });
-    assertEquals(itter.next(), { done: true, value: undefined });
 });
 
 Deno.test("lazyRange", () => {

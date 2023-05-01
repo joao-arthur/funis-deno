@@ -4,7 +4,9 @@ import { omit } from "./omit.ts";
 Deno.test("omit", () => {
     assertEquals(omit({}, []), {});
     assertEquals(omit({}, ["animal", "species", "age"]), {});
+});
 
+Deno.test("omit", () => {
     assertEquals(
         omit(
             { animal: "dog", species: "Canis lupus", age: 5 },

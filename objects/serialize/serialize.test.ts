@@ -14,7 +14,9 @@ Deno.test("serialize", () => {
         }),
         "{ name: Paul, numberOfBands: 4, bigNumberOfBands: 4, alive: true, birthday: 1942-06-18T03:00:00.000Z, unique: Symbol(Paul) }",
     );
+});
 
+Deno.test("serialize", () => {
     assertEquals(
         serialize({
             sayHi: (): string => "hi, my name is Eminem",
@@ -22,7 +24,9 @@ Deno.test("serialize", () => {
         }),
         "{ }",
     );
+});
 
+Deno.test("serialize", () => {
     assertEquals(
         serialize({
             empty: [],
@@ -31,7 +35,9 @@ Deno.test("serialize", () => {
         }),
         "{ empty: , oneValue: 1, multiValue: true, false, zaphod, 42 }",
     );
+});
 
+Deno.test("serialize", () => {
     class Dog {
         constructor(private readonly name: string) {}
 

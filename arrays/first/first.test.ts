@@ -3,7 +3,9 @@ import { first } from "./first.ts";
 
 Deno.test("first", () => {
     assertEquals(first([]), undefined);
+});
 
+Deno.test("first", () => {
     assertEquals(first([false, true]), false);
     assertEquals(first([4, 5, 6]), 4);
     assertEquals(

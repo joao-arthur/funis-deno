@@ -3,12 +3,13 @@ import { disjoint } from "./disjoint.ts";
 
 Deno.test("disjoint", () => {
     assertEquals(disjoint([]), {});
+});
 
+Deno.test("disjoint", () => {
     assertEquals(
         disjoint([{ name: "Steve Harris", country: "UK" }]),
         { name: "Steve Harris", country: "UK" },
     );
-
     assertEquals(
         disjoint(
             [

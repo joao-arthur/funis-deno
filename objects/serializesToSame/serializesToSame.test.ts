@@ -5,7 +5,9 @@ import { serializesToSame } from "./serializesToSame.ts";
 Deno.test("serializesToSame", () => {
     assertEquals(serializesToSame([]), true);
     assertEquals(serializesToSame([{ r: 10, a: 57 }]), true);
+});
 
+Deno.test("serializesToSame", () => {
     assertEquals(
         serializesToSame([
             { x: 10.12, y: -1.53 },
@@ -21,7 +23,9 @@ Deno.test("serializesToSame", () => {
         false,
     );
     assertEquals(serializesToSame([{}, {}, {}]), true);
+});
 
+Deno.test("serializesToSame", () => {
     class CartesianPoint {
         constructor(
             private readonly x: number,

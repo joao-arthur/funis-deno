@@ -3,7 +3,9 @@ import { fromMap } from "./fromMap.ts";
 
 Deno.test("fromMap", () => {
     assertEquals(fromMap(new Map([])), {});
+});
 
+Deno.test("fromMap", () => {
     assertEquals(
         fromMap(
             new Map([

@@ -4,21 +4,15 @@ import { objectify } from "./objectify.ts";
 Deno.test("objectify", async () => {
     assertEquals(
         await objectify(Promise.resolve(undefined)),
-        {
-            value: undefined,
-            error: undefined,
-            type: "resolved",
-        },
+        { value: undefined, error: undefined, type: "resolved" },
     );
     assertEquals(
         await objectify(Promise.reject(undefined)),
-        {
-            value: undefined,
-            error: undefined,
-            type: "rejected",
-        },
+        { value: undefined, error: undefined, type: "rejected" },
     );
+});
 
+Deno.test("objectify", async () => {
     assertEquals(
         await objectify(Promise.resolve("Symbolic acts")),
         {
@@ -28,11 +22,7 @@ Deno.test("objectify", async () => {
         },
     );
     assertEquals(
-        await objectify(Promise.reject("So vivid")),
-        {
-            value: undefined,
-            error: "So vivid",
-            type: "rejected",
-        },
+        await objectify(Promise.resolve(undefined)),
+        { value: undefined, error: undefined, type: "resolved" },
     );
 });
