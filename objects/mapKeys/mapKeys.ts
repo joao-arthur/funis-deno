@@ -26,7 +26,7 @@ import { plainObject } from "../../types/plainObject.ts";
  * // }
  * ```
  */
-export function mapKeys<T>(
+export function mapKeys<const T>(
     obj: plainObject<T>,
     cb: (key: string | number) => string | number,
 ): plainObject<T> {
