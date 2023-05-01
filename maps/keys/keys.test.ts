@@ -1,9 +1,10 @@
-import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { keys } from "./keys.ts";
 
 Deno.test("keys", () => {
     assertEquals(keys(new Map()), []);
 });
+
 Deno.test("keys", () => {
     assertEquals(
         keys(

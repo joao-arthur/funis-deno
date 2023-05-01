@@ -1,7 +1,7 @@
 import {
     assertEquals,
     assertRejects,
-} from "https://deno.land/std@0.171.0/testing/asserts.ts";
+} from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { retry } from "./retry.ts";
 
 Deno.test("retry", async () => {
@@ -9,7 +9,9 @@ Deno.test("retry", async () => {
         await retry(() => Promise.reject("Donatello"), 0),
         undefined,
     );
+});
 
+Deno.test("retry", async () => {
     let i = 1;
     assertEquals(
         await retry(() => {
@@ -22,7 +24,9 @@ Deno.test("retry", async () => {
         }, 10),
         "Ludwig van Beethoven",
     );
+});
 
+Deno.test("retry", async () => {
     try {
         await assertRejects(
             () => retry(() => Promise.reject("Donatello"), 5),

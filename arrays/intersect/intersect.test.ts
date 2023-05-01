@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { intersect } from "./intersect.ts";
 
 Deno.test("intersect", () => {

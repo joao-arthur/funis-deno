@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { fromObject } from "./fromObject.ts";
 
 Deno.test("fromObject", () => {
@@ -13,11 +13,13 @@ Deno.test("fromObject", () => {
             George: "Guitar",
             Ringo: "Drums",
         }),
-        new Map([
-            ["Paul", "Bass"],
-            ["John", "Guitar"],
-            ["George", "Guitar"],
-            ["Ringo", "Drums"],
-        ] as const),
+        new Map(
+            [
+                ["Paul", "Bass"],
+                ["John", "Guitar"],
+                ["George", "Guitar"],
+                ["Ringo", "Drums"],
+            ] as const,
+        ),
     );
 });

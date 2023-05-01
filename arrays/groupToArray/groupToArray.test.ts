@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { groupToArray } from "./groupToArray.ts";
 
 Deno.test("groupToArray", () => {

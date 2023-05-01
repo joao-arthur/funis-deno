@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { random } from "./random.ts";
 
 Deno.test("random", () => {

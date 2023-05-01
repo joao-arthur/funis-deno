@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { resolveTimeout } from "../../promises/resolveTimeout/resolveTimeout.ts";
 import { debounce } from "./debounce.ts";
 
