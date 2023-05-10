@@ -2,7 +2,7 @@ import { pipe } from "../../standard/pipe/pipe.ts";
 import { toFixed } from "../toFixed/toFixed.ts";
 
 /**
- * # numbers.range
+ * # range
  *
  * Returns a range from a number to another, respecting the step between each value.
  *

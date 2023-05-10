@@ -1,7 +1,7 @@
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.omit
+ * # omit
  *
  * Creates an object without the passed keys.
  *

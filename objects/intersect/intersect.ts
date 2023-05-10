@@ -4,7 +4,7 @@ import { self } from "../../standard/self/self.ts";
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.intersect
+ * # intersect
  *
  * Returns an object with the entries that appear in all of them.
  *

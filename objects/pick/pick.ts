@@ -1,7 +1,7 @@
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.pick
+ * # pick
  *
  * Creates an object with only the passed keys.
  *

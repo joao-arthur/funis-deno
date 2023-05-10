@@ -4,7 +4,7 @@ import { self } from "../../standard/self/self.ts";
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.disjoint
+ * # disjoint
  *
  * Returns an object with the entries which the key appears in only one of them.
  *

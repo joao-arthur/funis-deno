@@ -2,7 +2,7 @@ import { pipe } from "../../standard/pipe/pipe.ts";
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.mapEntries
+ * # mapEntries
  *
  * Map the object entries into an object.
  *

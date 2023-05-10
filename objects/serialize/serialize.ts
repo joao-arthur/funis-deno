@@ -1,7 +1,7 @@
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.serialize
+ * # serialize
  *
  * Serializes the plain properties to a json-like format that is friendly to read.
  *

@@ -2,7 +2,7 @@ import { plainObject } from "../../types/plainObject.ts";
 import { groupToEntries } from "../groupToEntries/groupToEntries.ts";
 
 /**
- * # arrays.groupToObject
+ * # groupToObject
  *
  * Group the items by the returned value of the callback. Then return the groups in an plain object.
  *

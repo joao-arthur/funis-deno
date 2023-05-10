@@ -2,7 +2,7 @@ import { last as arrayLast } from "../../arrays/last/last.ts";
 import { entries } from "../entries/entries.ts";
 
 /**
- * # maps.last
+ * # last
  *
  * Returns the last entry of the map.
  *

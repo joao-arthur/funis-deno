@@ -2,7 +2,7 @@ import { pipe } from "../../standard/pipe/pipe.ts";
 import { unique } from "../unique/unique.ts";
 
 /**
- * # arrays.groupToEntries
+ * # groupToEntries
  *
  * Group the items by the returned value of the callback. Then return the groups in entries.
  *

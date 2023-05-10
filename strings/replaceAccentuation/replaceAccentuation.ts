@@ -1,7 +1,7 @@
 import { accents } from "../internal/accents.ts";
 
 /**
- * # strings.replaceAccentuation
+ * # replaceAccentuation
  *
  * Replace accentuated characters by unaccentuated ones.
  *

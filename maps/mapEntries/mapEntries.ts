@@ -2,7 +2,7 @@ import { pipe } from "../../standard/pipe/pipe.ts";
 import { entries } from "../entries/entries.ts";
 
 /**
- * # maps.mapEntries
+ * # mapEntries
  *
  * Map the _Map instance_ entries into a new _Map instance_.
  *

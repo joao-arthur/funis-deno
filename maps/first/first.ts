@@ -2,7 +2,7 @@ import { first as arrayFirst } from "../../arrays/first/first.ts";
 import { entries } from "../entries/entries.ts";
 
 /**
- * # maps.first
+ * # first
  *
  * Returns the first entry of the map.
  *

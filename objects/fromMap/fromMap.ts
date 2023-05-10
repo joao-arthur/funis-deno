@@ -2,7 +2,7 @@ import { entries } from "../../maps/entries/entries.ts";
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
- * # objects.fromMap
+ * # fromMap
  *
  * Returns an object with the same key-value pairs of the passed Map instance.
  *
