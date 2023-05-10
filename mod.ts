@@ -1,8 +1,8 @@
-export { arrays } from "./arrays/mod.ts";
-export { callbacks } from "./callbacks/mod.ts";
-export { maps } from "./maps/mod.ts";
-export { numbers } from "./numbers/mod.ts";
-export { objects } from "./objects/mod.ts";
-export { promises } from "./promises/mod.ts";
-export { standard } from "./standard/mod.ts";
-export { strings } from "./strings/mod.ts";
+export { arr } from "./arr/mod.ts";
+export { cb } from "./cb/mod.ts";
+export { map } from "./map/mod.ts";
+export { num } from "./num/mod.ts";
+export { obj } from "./obj/mod.ts";
+export { prm } from "./prm/mod.ts";
+export { std } from "./std/mod.ts";
+export { str } from "./str/mod.ts";
