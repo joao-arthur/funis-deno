@@ -5,6 +5,7 @@ import { isValid } from "./isValid/isValid.ts";
 import { random } from "./random/random.ts";
 import { compareAsc } from "./compareAsc/compareAsc.ts";
 import { compareDesc } from "./compareDesc/compareDesc.ts";
+import { toFixed } from "./toFixed/toFixed.ts";
 
 export const numbers = {
     clamp,
@@ -14,4 +15,5 @@ export const numbers = {
     random,
     compareAsc,
     compareDesc,
+    toFixed,
 } as const;
