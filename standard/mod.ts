@@ -1,5 +1,13 @@
-export { compose } from "./compose/compose.ts";
-export { pipe } from "./pipe/pipe.ts";
-export { self } from "./self/self.ts";
-export { throttle } from "./throttle/throttle.ts";
-export { debounce } from "./debounce/debounce.ts";
+import { compose } from "./compose/compose.ts";
+import { pipe } from "./pipe/pipe.ts";
+import { self } from "./self/self.ts";
+import { throttle } from "./throttle/throttle.ts";
+import { debounce } from "./debounce/debounce.ts";
+
+export const standard = {
+    compose,
+    pipe,
+    self,
+    throttle,
+    debounce,
+} as const;
