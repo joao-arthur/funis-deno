@@ -1,5 +1,6 @@
 export { arr } from "./arr/mod.ts";
 export { cb } from "./cb/mod.ts";
+export { chr } from "./chr/mod.ts";
 export { map } from "./map/mod.ts";
 export { num } from "./num/mod.ts";
 export { obj } from "./obj/mod.ts";
