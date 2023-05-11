@@ -1,4 +1,4 @@
-import { combinations } from "../../arr/combinations/combinations.ts";
+import { arr } from "../../arr/mod.ts";
 import { plainObject } from "../../types/plainObject.ts";
 import { serialize } from "../serialize/serialize.ts";
 
@@ -34,6 +34,6 @@ import { serialize } from "../serialize/serialize.ts";
 export function serializesToSame(
     objs: plainObject[],
 ): boolean {
-    return combinations(objs)
+    return arr.combinations(objs)
         .every(([a, b]) => serialize(a) === serialize(b));
 }

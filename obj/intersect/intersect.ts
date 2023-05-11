@@ -1,5 +1,4 @@
-import { groupToArray } from "../../arr/groupToArray/groupToArray.ts";
-import { unique } from "../../arr/unique/unique.ts";
+import { arr } from "../../arr/mod.ts";
 import { self } from "../../std/self/self.ts";
 import { plainObject } from "../../types/plainObject.ts";
 
@@ -25,8 +24,8 @@ export function intersect(
         .map((obj) => Object.entries(obj))
         .flat();
     const allEntriesObject = Object.fromEntries(allEntries);
-    const uniqueKeys = unique(
-        groupToArray(
+    const uniqueKeys = arr.unique(
+        arr.groupToArray(
             allEntries.map(([key]) => key),
             self,
         )
@@ -36,7 +35,7 @@ export function intersect(
     return Object.fromEntries(
         uniqueKeys
             .filter((key) =>
-                unique(
+                arr.unique(
                     allEntries
                         .filter(([entryKey]) => entryKey === key)
                         .map(([, value]) => value),

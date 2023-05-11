@@ -1,4 +1,4 @@
-import { pipe } from "../../std/pipe/pipe.ts";
+import { std } from "../../std/mod.ts";
 import { plainObject } from "../../types/plainObject.ts";
 
 /**
@@ -30,7 +30,7 @@ export function mapValues<const T>(
     obj: plainObject,
     cb: (value: T) => T,
 ): plainObject {
-    return pipe(
+    return std.pipe(
         () => obj,
         Object.entries,
         (entries) => entries.map(([key, value]) => [key, cb(value)]),

@@ -1,4 +1,4 @@
-import { last as arrayLast } from "../../arr/last/last.ts";
+import { arr } from "../../arr/mod.ts";
 import { entries } from "../entries/entries.ts";
 
 /**
@@ -24,5 +24,5 @@ import { entries } from "../entries/entries.ts";
 export function last<K, V>(
     map: Map<K, V>,
 ): readonly [K, V] | undefined {
-    return arrayLast(entries(map));
+    return arr.last(entries(map));
 }
