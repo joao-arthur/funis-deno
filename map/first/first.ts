@@ -9,11 +9,11 @@ import { entries } from "../entries/entries.ts";
  * ## Example
  *
  * ```ts
- * maps.first(new Map()) // undefined
+ * map.first(new Map()) // undefined
  * ```
  *
  * ```ts
- * maps.first(
+ * map.first(
  *     new Map([
  *         [1, { name: 'Paul McCartney' }],
  *         [2, { name: 'John Lennon' }],

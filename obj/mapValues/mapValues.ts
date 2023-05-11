@@ -9,7 +9,7 @@ import { plainObject } from "../../types/plainObject.ts";
  * ## Example
  *
  * ```ts
- * objects.mapValues(
+ * obj.mapValues(
  *     {
  *         a: 1,
  *         b: 'two',
