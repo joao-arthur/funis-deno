@@ -1,8 +1,8 @@
 /**
  * # normalizeZero
- * 
+ *
  * If the passed value is -0, returns 0. Returns the passed value otherwise.
- * 
+ *
  * ## Example
  *
  * ```ts
