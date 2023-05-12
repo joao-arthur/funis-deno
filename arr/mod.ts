@@ -11,6 +11,7 @@ import { intersect } from "./intersect/intersect.ts";
 import { once } from "./once/once.ts";
 import { combinations } from "./combinations/combinations.ts";
 import { random } from "./random/random.ts";
+import { repeat } from "./repeat/repeat.ts";
 
 export const arr = {
     groupToEntries,
@@ -26,4 +27,5 @@ export const arr = {
     once,
     combinations,
     random,
+    repeat,
 } as const;
