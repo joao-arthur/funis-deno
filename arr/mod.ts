@@ -1,9 +1,7 @@
-import { first } from "./first/first.ts";
 import { groupToEntries } from "./groupToEntries/groupToEntries.ts";
 import { groupToArray } from "./groupToArray/groupToArray.ts";
 import { groupToMap } from "./groupToMap/groupToMap.ts";
 import { groupToObject } from "./groupToObject/groupToObject.ts";
-import { last } from "./last/last.ts";
 import { sort } from "./sort/sort.ts";
 import { unique } from "./unique/unique.ts";
 import { disjoint } from "./disjoint/disjoint.ts";
@@ -18,8 +16,6 @@ export const arr = {
     groupToArray,
     groupToMap,
     groupToObject,
-    first,
-    last,
     sort,
     unique,
     disjoint,
