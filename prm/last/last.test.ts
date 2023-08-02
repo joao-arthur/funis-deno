@@ -1,7 +1,5 @@
-import {
-    assertEquals,
-    assertRejects,
-} from "https://deno.land/std@0.185.0/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertRejects } from "std/assert/assert_rejects.ts";
 import { rejectTimeout } from "../rejectTimeout/rejectTimeout.ts";
 import { resolveTimeout } from "../resolveTimeout/resolveTimeout.ts";
 import { last } from "./last.ts";

@@ -1,7 +1,5 @@
-import {
-    assertEquals,
-    assertRejects,
-} from "https://deno.land/std@0.185.0/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertRejects } from "std/assert/assert_rejects.ts";
 import { retry } from "./retry.ts";
 
 Deno.test("retry", async () => {

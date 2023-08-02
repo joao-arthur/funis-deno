@@ -7,5 +7,7 @@
     "deno.inlayHints.parameterNames.enabled": "none",
     "deno.inlayHints.parameterTypes.enabled": false,
     "deno.inlayHints.propertyDeclarationTypes.enabled": false,
-    "deno.inlayHints.variableTypes.enabled": false
+    "deno.inlayHints.variableTypes.enabled": false,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
 }

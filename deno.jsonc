@@ -7,9 +7,14 @@
         "rules": {
             "include": [
                 "explicit-function-return-type",
-                "eqeqeq",
                 "default-param-last"
             ]
         }
+    },
+    "imports": {
+        "std/": "https://deno.land/std@0.196.0/"
+    },
+    "tasks": {
+        "test": "deno test --parallel"
     }
 }

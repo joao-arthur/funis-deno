@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { plainObject } from "../../types/plainObject.ts";
 import { serializesToSame } from "./serializesToSame.ts";
 

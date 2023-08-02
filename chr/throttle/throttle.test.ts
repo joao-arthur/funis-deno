@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { resolveTimeout } from "../../prm/resolveTimeout/resolveTimeout.ts";
 import { throttle } from "./throttle.ts";
 

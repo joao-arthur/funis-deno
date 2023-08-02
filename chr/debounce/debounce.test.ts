@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.185.0/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { resolveTimeout } from "../../prm/resolveTimeout/resolveTimeout.ts";
 import { debounce } from "./debounce.ts";
 
@@ -28,27 +28,22 @@ Deno.test("debounce", async () => {
     assertEquals(emptyArr, ["Salvator mundi"]);
 });
 
-Deno.test({
-    name: "debounce",
-    fn: async () => {
-        const emptyArr: string[] = [];
-        const returnedFn = debounce(
-            () => emptyArr.push("Salvator mundi"),
-            30,
-        );
-        returnedFn();
-        await resolveTimeout(undefined, 8);
-        returnedFn();
-        await resolveTimeout(undefined, 8);
-        returnedFn();
-        await resolveTimeout(undefined, 8);
-        returnedFn();
-        await resolveTimeout(undefined, 8);
-        assertEquals(emptyArr, []);
-    },
-    // I don't know where is the leaking
-    sanitizeResources: false,
-    sanitizeOps: false,
+Deno.test("debounce", async () => {
+    const emptyArr: string[] = [];
+    const returnedFn = debounce(
+        () => emptyArr.push("Salvator mundi"),
+        30,
+    );
+    returnedFn();
+    await resolveTimeout(undefined, 8);
+    returnedFn();
+    await resolveTimeout(undefined, 8);
+    returnedFn();
+    await resolveTimeout(undefined, 8);
+    returnedFn();
+    await resolveTimeout(undefined, 8);
+    assertEquals(emptyArr, []);
+    await resolveTimeout(undefined, 50);
 });
 
 Deno.test("debounce", async () => {
