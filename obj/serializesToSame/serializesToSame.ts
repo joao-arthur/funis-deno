@@ -34,6 +34,6 @@ import { serialize } from "../serialize/serialize.ts";
 export function serializesToSame(
     objs: plainObject[],
 ): boolean {
-    return arr.combinations(objs)
+    return arr.combinate(objs)
         .every(([a, b]) => serialize(a) === serialize(b));
 }
