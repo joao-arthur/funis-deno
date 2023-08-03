@@ -1,6 +1,13 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertNotEquals } from "std/assert/assert_not_equals.ts";
 import { resolveTimeout } from "../../prm/resolveTimeout/resolveTimeout.ts";
 import { throttle } from "./throttle.ts";
+
+Deno.test("throttle", () => {
+    const timeoutId = throttle(() => {}, 1000)();
+    assertNotEquals(timeoutId, 0);
+    globalThis.clearTimeout(timeoutId);
+});
 
 Deno.test("throttle", () => {
     const emptyArr: string[] = [];

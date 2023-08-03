@@ -1,6 +1,13 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertNotEquals } from "std/assert/assert_not_equals.ts";
 import { resolveTimeout } from "../../prm/resolveTimeout/resolveTimeout.ts";
 import { debounce } from "./debounce.ts";
+
+Deno.test("debounce", () => {
+    const timeoutId = debounce(() => {}, 1000)();
+    assertNotEquals(timeoutId, 0);
+    globalThis.clearTimeout(timeoutId);
+});
 
 Deno.test("debounce", () => {
     const emptyArr: string[] = [];
@@ -40,10 +47,10 @@ Deno.test("debounce", async () => {
     await resolveTimeout(undefined, 8);
     returnedFn();
     await resolveTimeout(undefined, 8);
-    returnedFn();
+    const timeoutId = returnedFn();
     await resolveTimeout(undefined, 8);
     assertEquals(emptyArr, []);
-    await resolveTimeout(undefined, 50);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("debounce", async () => {
