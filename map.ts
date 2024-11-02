@@ -1,80 +1,49 @@
-import { PlainObject } from "../../types/PlainObject.ts";
+import { PlainObject } from "./object.ts";
+import { pipe } from "./standard.ts";
 
 /**
- * # entries
- *
- * Returns the entries of the Map instance.
- *
- * ## Example
- *
- * ```ts
- * map.entries(new Map()) // []
- * ```
- *
- * ```ts
- * map.entries(
- *     new Map([
- *         [1, { name: 'Paul McCartney' }],
- *         [2, { name: 'George Harrison' }],
- *     ])
- * )
- * // [
- * //     [1, { name: 'Paul McCartney' }],
- * //     [2, { name: 'George Harrison' }],
- * // ]
- * ```
- */
-export function entries<K, V>(
-    map: Map<K, V>,
-): readonly (readonly [K, V])[] {
-    return Array.from(map.entries());
-}
-
-/**
- * # fromObject
+ * # mapFromObj
  *
  * Returns a Map instance with the same key-value pairs of the passed object.
  *
  * ## Example
  *
  * ```ts
- * map.fromObject({}) // Map { }
+ * mapFromObj({}) // Map { }
  * ```
  *
  * ```ts
- * map.fromObject({
- *     Paul: 'Bass',
- *     John: 'Guitar',
- *     George: 'Guitar',
- *     Ringo: 'Drums',
+ * mapFromObj({
+ *     Paul: "Bass",
+ *     John: "Guitar",
+ *     George: "Guitar",
+ *     Ringo: "Drums",
  * })
  * // {
- * //     Paul -> 'Bass',
- * //     John -> 'Guitar',
- * //     George -> 'Guitar',
- * //     Ringo -> 'Drums',
+ * //     Paul -> "Bass",
+ * //     John -> "Guitar",
+ * //     George -> "Guitar",
+ * //     Ringo -> "Drums",
  * // }
  * ```
  */
-export function fromObject<const T>(
-    obj: PlainObject<T>,
-): Map<string | number, T> {
+export function mapFromObj<const T>(obj: PlainObject<T>): Map<string | number, T> {
     return new Map(Object.entries(obj));
 }
 
 /**
- * # fromObjectArray
+ * # mapFromObjArr
  *
  * Returns a Map instance with the items, using the passed prop of the objects as keys.
  *
  * ## Example
  *
  * ```ts
- * map.fromObjectArray([], "id") // Map { }
+ * mapFromObjArr([], "id") // Map { }
  * ```
  *
  * ```ts
- * map.fromObjectArray(
+ * mapFromObjArr(
  *     [
  *         { name: "Alex Lifeson", instrument: "Guitar" },
  *         { name: "Geddy Lee", instrument: "Bass" },
@@ -89,7 +58,7 @@ export function fromObject<const T>(
  * // }
  * ```
  */
-export function fromObjectArray<const T, const Id extends keyof T>(
+export function mapFromObjArr<const T, const Id extends keyof T>(
     items: readonly T[],
     prop: Id,
 ): Map<T[Id], T> {
@@ -101,120 +70,170 @@ export function fromObjectArray<const T, const Id extends keyof T>(
 }
 
 /**
- * # keys
+ * # mapEntries
+ *
+ * Returns the entries of the Map instance.
+ *
+ * ## Example
+ *
+ * ```ts
+ * mapEntries(new Map()) // []
+ * ```
+ *
+ * ```ts
+ * mapEntries(
+ *     new Map([
+ *         [1, { name: "Paul McCartney" }],
+ *         [2, { name: "George Harrison" }],
+ *     ])
+ * )
+ * // [
+ * //     [1, { name: "Paul McCartney" }],
+ * //     [2, { name: "George Harrison" }],
+ * // ]
+ * ```
+ */
+export function mapEntries<K, V>(map: Map<K, V>): readonly (readonly [K, V])[] {
+    return Array.from(map.entries());
+}
+
+/**
+ * # mapKeys
  *
  * Returns the keys of the Map instance entries.
  *
  * ## Example
  *
  * ```ts
- * map.keys(new Map()) // []
+ * mapKeys(new Map()) // []
  * ```
  *
  * ```ts
- * map.keys(
+ * mapKeys(
  *     new Map([
- *         [1, { name: 'Paul McCartney' }],
- *         [2, { name: 'George Harrison' }],
+ *         [1, { name: "Paul McCartney" }],
+ *         [2, { name: "George Harrison" }],
  *     ])
  * ) // [1, 2]
  * ```
  */
-export function keys<K, V>(map: Map<K, V>): readonly K[] {
+export function mapKeys<K, V>(map: Map<K, V>): readonly K[] {
     return Array.from(map.keys());
 }
 
 /**
- * # mapEntries
+ * # mapValues
+ *
+ * Returns the values of the Map instance entries.
+ *
+ * ## Example
+ *
+ * ```ts
+ * mapValues(new Map()) // []
+ * ```
+ *
+ * ```ts
+ * mapValues(
+ *     new Map([
+ *         [1, { name: "Paul McCartney" }],
+ *         [2, { name: "George Harrison" }],
+ *     ])
+ * )
+ * // [
+ * //     { name: "Paul McCartney" },
+ * //     { name: "George Harrison" },
+ * // ]
+ * ```
+ */
+export function mapValues<K, V>(map: Map<K, V>): readonly V[] {
+    return Array.from(map.values());
+}
+
+/**
+ * # mapMapEntries
  *
  * Map the _Map instance_ entries into a new _Map instance_.
  *
  * ## Example
  *
  * ```ts
- * map.mapEntries(
+ * mapMapEntries(
  *     new Map([
- *         ['a', 1],
- *         ['b', 'two'],
- *         ['c', true],
- *         [4, 'nada'],
+ *         ["a", 1],
+ *         ["b", "two"],
+ *         ["c", true],
+ *         [4, "nada"],
  *     ]),
  *     ([key, value]) => [`key_${key}`, `value_${value}`],
  * )
  * // {
- * //     key_a -> 'value_1',
- * //     key_b -> 'value_two',
- * //     key_c -> 'value_true',
- * //     key_4 -> 'value_nada',
+ * //     key_a -> "value_1",
+ * //     key_b -> "value_two",
+ * //     key_c -> "value_true",
+ * //     key_4 -> "value_nada",
  * // }
  * ```
  */
-export function mapEntries<K, V>(
+export function mapMapEntries<K, V>(
     map: Map<K, V>,
     cb: (entry: readonly [K, V]) => readonly [K, V],
 ): Map<K, V> {
-    return std.pipe(
+    return pipe(
         () => map,
-        entries,
+        mapEntries,
         (entries) => entries.map(cb),
         (entries) => new Map(entries),
     )(undefined);
 }
 
 /**
- * # mapKeys
+ * # mapMapKeys
  *
  * Map the _Map instance_ keys into a new _Map instance_.
  *
  * ## Example
  *
  * ```ts
- * map.mapKeys(
+ * mapMapKeys(
  *     new Map([
- *         ['a', 1],
- *         ['b', 'two'],
- *         ['c', true],
- *         [4, 'nada'],
+ *         ["a", 1],
+ *         ["b", "two"],
+ *         ["c", true],
+ *         [4, "nada"],
  *     ]),
  *     key => `v2_${key}_test`,
  * )
  * // {
  * //     v2_a_test -> 1,
- * //     v2_b_test -> 'two',
+ * //     v2_b_test -> "two",
  * //     v2_c_test -> true,
- * //     v2_4_test -> 'nada',
+ * //     v2_4_test -> "nada",
  * // }
  * ```
  */
-export function mapKeys<K, V>(
-    map: Map<K, V>,
-    cb: (key: K) => K,
-): Map<K, V> {
-    return std.pipe(
+export function mapMapKeys<K, V>(map: Map<K, V>, cb: (key: K) => K): Map<K, V> {
+    return pipe(
         () => map,
-        (map) => entries(map),
-        (entries) =>
-            entries.map(
-                ([key, value]) => [cb(key), value] as const,
-            ),
+        (map) => mapEntries(map),
+        (entries) => entries.map(([key, value]) => [cb(key), value] as const),
         (entries) => new Map(entries),
     )(undefined);
 }
 
 /**
- * # mapValues
+ * # mapMapValues
  *
  * Map the _Map instance_ values into a new _Map instance_.
  *
  * ## Example
  *
  * ```ts
- * map.mapValues(
+ * mapMapValues(
  *     new Map([
- *         ['a', 1],
- *         ['b', 'two'],
- *         ['c', true],
- *         [4, 'nada'],
+ *         ["a", 1],
+ *         ["b", "two"],
+ *         ["c", true],
+ *         [4, "nada"],
  *     ]),
  *     value => value === true,
  * )
@@ -226,45 +245,11 @@ export function mapKeys<K, V>(
  * // }
  * ```
  */
-export function mapValues<K, V>(
-    map: Map<K, V>,
-    cb: (value: V) => V,
-): Map<K, V> {
-    return std.pipe(
+export function mapMapValues<K, V>(map: Map<K, V>, cb: (value: V) => V): Map<K, V> {
+    return pipe(
         () => map,
-        (map: Map<K, V>) => entries(map),
-        (entries) =>
-            entries.map(
-                ([key, value]) => [key, cb(value)] as const,
-            ),
+        (map: Map<K, V>) => mapEntries(map),
+        (entries) => entries.map(([key, value]) => [key, cb(value)] as const),
         (entries) => new Map(entries),
     )(undefined);
-}
-
-/**
- * # values
- *
- * Returns the values of the Map instance entries.
- *
- * ## Example
- *
- * ```ts
- * map.values(new Map()) // []
- * ```
- *
- * ```ts
- * map.values(
- *     new Map([
- *         [1, { name: 'Paul McCartney' }],
- *         [2, { name: 'George Harrison' }],
- *     ])
- * )
- * // [
- * //     { name: 'Paul McCartney' },
- * //     { name: 'George Harrison' },
- * // ]
- * ```
- */
-export function values<K, V>(map: Map<K, V>): readonly V[] {
-    return Array.from(map.values());
 }

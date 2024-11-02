@@ -9,30 +9,27 @@
  * ## Example
  *
  * ```ts
- * await prm.last([
- *     prm.rejectTimeout('Socrates', 50),
- *     prm.resolveTimeout('Plato', 100),
- *     prm.resolveTimeout('Aristotle', 200),
- * ]) // 'Aristotle'
+ * await last([
+ *     rejectTimeout("Socrates", 50),
+ *     resolveTimeout("Plato", 100),
+ *     resolveTimeout("Aristotle", 200),
+ * ]) // "Aristotle"
  * ```
  */
-export function last<const T>(
-    prms: readonly Promise<T>[],
-): Promise<T> {
+export function last<const T>(pros: readonly Promise<T>[]): Promise<T> {
     return new Promise((resolve, reject) => {
         let resulted = 0;
-
-        prms.forEach((promise) => {
+        pros.forEach((promise) => {
             promise
                 .then((value) => {
-                    if (resulted === prms.length - 1) {
+                    if (resulted === pros.length - 1) {
                         resolve(value);
                     } else {
                         resulted++;
                     }
                 })
                 .catch((error) => {
-                    if (resulted === prms.length - 1) {
+                    if (resulted === pros.length - 1) {
                         reject(error);
                     } else {
                         resulted++;
@@ -41,7 +38,8 @@ export function last<const T>(
         });
     });
 }
-type returnType<V, E> = {
+
+export type ObjectifyResult<V, E> = {
     readonly value: V;
     readonly error: undefined;
     readonly type: "resolved";
@@ -59,29 +57,27 @@ type returnType<V, E> = {
  * ## Example
  *
  * ```ts
- * await prm.objectify(
+ * await objectify(
  *     Promise.resolve(undefined)
- * ) // { value: undefined, error: undefined, type: 'resolved' }
- * await prm.objectify(
- *     Promise.resolve('Symbolic acts')
- * ) // { value: 'Symbolic acts', error: undefined, type: 'resolved' }
+ * ) // { value: undefined, error: undefined, type: "resolved" }
+ * await objectify(
+ *     Promise.resolve("Symbolic acts")
+ * ) // { value: "Symbolic acts", error: undefined, type: "resolved" }
  * ```
  *
  * ```ts
- * await prm.objectify(
+ * await objectify(
  *     Promise.reject(undefined)
- * ) // { value: undefined, error: undefined, type: 'rejected' }
- * await prm.objectify(
- *     Promise.reject('So vivid')
- * ) // { value: undefined, error: 'So vivid', type: 'rejected' }
+ * ) // { value: undefined, error: undefined, type: "rejected" }
+ * await objectify(
+ *     Promise.reject("So vivid")
+ * ) // { value: undefined, error: "So vivid", type: "rejected" }
  * ```
  */
-export async function objectify<V, E>(
-    prm: Promise<V>,
-): Promise<returnType<V, E>> {
+export async function objectify<V, E>(pro: Promise<V>): Promise<ObjectifyResult<V, E>> {
     try {
         return {
-            value: await prm,
+            value: await pro,
             error: undefined,
             type: "resolved",
         };
@@ -102,19 +98,13 @@ export async function objectify<V, E>(
  *
  * ```ts
  * try {
- *     await prm.resolveTimeout(
- *         'Hello, promise!',
- *         500
- *     );
+ *     await rejectTimeout("Hello, promise!", 500);
  * } catch (e) {
- *     e // 'Hello, promise!'
+ *     e // "Hello, promise!"
  * }
  * ```
  */
-export function rejectTimeout<const T>(
-    valueToReject: T,
-    timeout: number,
-): Promise<T> {
+export function rejectTimeout<const T>(valueToReject: T, timeout: number): Promise<T> {
     return new Promise((_, reject) => {
         globalThis.setTimeout(() => reject(valueToReject), timeout);
     });
@@ -127,16 +117,10 @@ export function rejectTimeout<const T>(
  * ## Example
  *
  * ```ts
- * await prm.resolveTimeout(
- *     'Hello, promise!',
- *     500
- * ) // 'Hello, promise!'
+ * await resolveTimeout("Hello, promise!", 500) // "Hello, promise!"
  * ```
  */
-export function resolveTimeout<const T>(
-    valueToResolve: T,
-    timeout: number,
-): Promise<T> {
+export function resolveTimeout<const T>(valueToResolve: T, timeout: number): Promise<T> {
     return new Promise((resolve) => {
         globalThis.setTimeout(() => resolve(valueToResolve), timeout);
     });
@@ -155,27 +139,21 @@ export function resolveTimeout<const T>(
  * retry(() => {
  *     i++;
  *     if (i === 5)
- *         return Promise.resolve('Ludwig van Beethoven');
+ *         return Promise.resolve("Ludwig van Beethoven");
  *     else
- *         return Promise.reject('Johann Sebastian Bach');
- * }, 10) // 'Ludwig van Beethoven'
+ *         return Promise.reject("Johann Sebastian Bach");
+ * }, 10) // "Ludwig van Beethoven"
  * ```
  *
  * ```ts
  * try {
- *     await prm.retry(
- *         Promise.reject('Donatello'),
- *         5
- *     );
+ *     await retry(Promise.reject("Donatello"), 5);
  * } catch (e) {
- *     e // 'Donatello'
+ *     e // "Donatello"
  * }
  * ```
  */
-export async function retry<V, E>(
-    cb: () => Promise<V>,
-    attempts: number,
-): Promise<V | undefined> {
+export async function retry<V, E>(cb: () => Promise<V>, attempts: number): Promise<V | undefined> {
     if (attempts < 1) {
         return undefined;
     }

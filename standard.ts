@@ -6,15 +6,15 @@
  * ## Example
  *
  * ```ts
- * std.self(1) // 1
- * std.self('goodbye') // 'goodbye'
+ * self(1) // 1
+ * self("goodbye") // "goodbye"
  * ```
  */
 export function self<const T>(value: T): T {
     return value;
 }
 
-type unknownFn = (arg: unknown) => unknown;
+type UnknownFn = (arg: unknown) => unknown;
 
 export function compose<T1, T2>(
     fn1: (arg1: T1) => T2,
@@ -1006,15 +1006,15 @@ export function compose<
  * ## Example
  *
  * ```ts
- * std.compose(
- *     value => `${value} is the result` // '5 is the result'
+ * compose(
+ *     value => `${value} is the result` // "5 is the result"
  *     (value: number) => value / 3, // 5
  *     (value: number) => value - 5, // 15
  *     (value: number) => value * 2, // 20
- * )(10) // '5 is the result'
+ * )(10) // "5 is the result"
  * ```
  */
-export function compose(...fns: readonly unknownFn[]): unknownFn {
+export function compose(...fns: readonly UnknownFn[]): UnknownFn {
     return (initialParam) => fns.reduceRight((curr, fn) => fn(curr), initialParam);
 }
 
@@ -1103,20 +1103,7 @@ export function pipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
     fn10: (arg10: T10) => T11,
 ): (initialValue: T1) => T11;
 
-export function pipe<
-    T1,
-    T2,
-    T3,
-    T4,
-    T5,
-    T6,
-    T7,
-    T8,
-    T9,
-    T10,
-    T11,
-    T12,
->(
+export function pipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
     fn1: (arg1: T1) => T2,
     fn2: (arg2: T2) => T3,
     fn3: (arg3: T3) => T4,
@@ -2021,14 +2008,14 @@ export function pipe<
  * ## Example
  *
  * ```ts
- * std.pipe(
+ * pipe(
  *    (value: number) => value * 2, // 20
  *    value => value - 5, // 15
  *    value => value / 3, // 5
- *    value => `${value} is the result` // '5 is the result'
- * )(10) // '5 is the result'
+ *    value => `${value} is the result` // "5 is the result"
+ * )(10) // "5 is the result"
  * ```
  */
-export function pipe(...fns: readonly unknownFn[]): unknownFn {
+export function pipe(...fns: readonly UnknownFn[]): UnknownFn {
     return (initialParam) => fns.reduce((curr, fn) => fn(curr), initialParam);
 }

@@ -1,18 +1,78 @@
+import { numRandom } from "./number.ts";
+
 /**
- * # camelCase
+ * # strIsValid
+ *
+ * Returns false for _undefined_ and _null_. Returns true otherwise.
+ *
+ * ## Example
+ *
+ * ```ts
+ * strIsValid(undefined) // false
+ * strIsValid(null) // false
+ * ```
+ *
+ * ```ts
+ * strIsValid("") // true
+ * strIsValid(" ") // true
+ * strIsValid("Lorem ipsum") // true
+ * ```
+ */
+export function strIsValid(str: string | undefined | null): boolean {
+    if (typeof str !== "string") {
+        return false;
+    }
+    if (str === "") {
+        return true;
+    }
+    return !!str;
+}
+
+/**
+ * # strCompAsc
+ *
+ * Compare the numbers in ascending order.
+ *
+ * ## Example
+ *
+ * ```ts
+ * ["q", "p", "Q", "P"].sort(strCompAsc) // ["P", "Q", "p", "q"]
+ * ```
+ */
+export function strCompAsc(a: string, b: string): number {
+    return a > b ? 1 : -1;
+}
+
+/**
+ * # strCompDesc
+ *
+ * Compare the numbers in descending order.
+ *
+ * ## Example
+ *
+ * ```ts
+ * ["q", "p", "Q", "P"].sort(strCompDesc) // ["Q", "P", "q", "p"]
+ * ```
+ */
+export function strCompDesc(a: string, b: string): number {
+    return a > b ? -1 : 1;
+}
+
+/**
+ * # strCamelCase
  *
  * Transforms a sequence of words into camel case.
  *
  * ## Example
  *
  * ```ts
- * str.camelCase('hey') // 'hey'
- * str.camelCase('j S o N') // 'jSON'
- * str.camelCase('j_S_o_N') // 'jSON'
- * str.camelCase('j-S-o-N') // 'jSON'
+ * strCamelCase("hey") // "hey"
+ * strCamelCase("j S o N") // "jSON"
+ * strCamelCase("j_S_o_N") // "jSON"
+ * strCamelCase("j-S-o-N") // "jSON"
  * ```
  */
-export function camelCase(str: string): string {
+export function strCamelCase(str: string): string {
     if (str === "") {
         return "";
     }
@@ -25,34 +85,67 @@ export function camelCase(str: string): string {
         )
         .join("");
 }
+
 /**
- * # compareAsc
+ * # strKebabCase
  *
- * Compare the numbers in ascending order.
+ * Transforms a sequence of words into kebab case.
  *
  * ## Example
  *
  * ```ts
- * ['q', 'p', 'Q', 'P'].sort(str.compareAsc) // ['P', 'Q', 'p', 'q']
+ * strKebabCase("hey") // "hey"
+ * strKebabCase("j S o N") // "j-s-o-n"
+ * strKebabCase("j_S_o_N") // "j-s-o-n"
+ * strKebabCase("j-S-o-N") // "j-s-o-n"
  * ```
  */
-export function compareAsc(a: string, b: string): number {
-    return a > b ? 1 : -1;
+export function strKebabCase(str: string): string {
+    return str.split(/ |_|-/g).map((word) => word.toLocaleLowerCase()).join("-");
 }
+
 /**
- * # compareDesc
+ * # strPascalCase
  *
- * Compare the numbers in descending order.
+ * Transforms a sequence of words into pascal case.
  *
  * ## Example
  *
  * ```ts
- * ['q', 'p', 'Q', 'P'].sort(str.compareDesc) // ['Q', 'P', 'q', 'p']
+ * strPascalCase("hey") // "Hey"
+ * strPascalCase("j S o N") // "JSON"
+ * strPascalCase("j_S_o_N") // "JSON"
+ * strPascalCase("j-S-o-N") // "JSON"
  * ```
  */
-export function compareDesc(a: string, b: string): number {
-    return a > b ? -1 : 1;
+export function strPascalCase(str: string): string {
+    if (str === "") {
+        return "";
+    }
+    return str
+        .split(/ |_|-/g)
+        .map((word) => word[0].toLocaleUpperCase() + word.slice(1).toLocaleLowerCase())
+        .join("");
 }
+
+/**
+ * # strSnakeCase
+ *
+ * Transforms a sequence of words into snake case.
+ *
+ * ## Example
+ *
+ * ```ts
+ * strSnakeCase("hey") // "hey"
+ * strSnakeCase("j S o N") // "j_s_o_n"
+ * strSnakeCase("j_S_o_N") // "j_s_o_n"
+ * strSnakeCase("j-S-o-N") // "j_s_o_n"
+ * ```
+ */
+export function strSnakeCase(str: string): string {
+    return str.split(/ |_|-/g).map((word) => word.toLocaleLowerCase()).join("_");
+}
+
 export const accents = new Map([
     ["á", "a"],
     ["Á", "A"],
@@ -260,155 +353,61 @@ export const accents = new Map([
     ["ž", "z"],
     ["Ž", "Z"],
 ]);
-/**
- * # isValid
- *
- * Returns false for _undefined_ and _null_. Returns true otherwise.
- *
- * ## Example
- *
- * ```ts
- * str.isValid(undefined) // false
- * str.isValid(null) // false
- * ```
- *
- * ```ts
- * str.isValid('') // true
- * str.isValid(' ') // true
- * str.isValid('Lorem ipsum') // true
- * ```
- */
-export function isValid(str: string | undefined | null): boolean {
-    if (typeof str !== "string") {
-        return false;
-    }
-    if (str === "") {
-        return true;
-    }
-    return !!str;
-}
-/**
- * # kebabCase
- *
- * Transforms a sequence of words into kebab case.
- *
- * ## Example
- *
- * ```ts
- * str.kebabCase('hey') // 'hey'
- * str.kebabCase('j S o N') // 'j-s-o-n'
- * str.kebabCase('j_S_o_N') // 'j-s-o-n'
- * str.kebabCase('j-S-o-N') // 'j-s-o-n'
- * ```
- */
-export function kebabCase(str: string): string {
-    return str
-        .split(/ |_|-/g)
-        .map((word) => word.toLocaleLowerCase())
-        .join("-");
-}
-/**
- * # pascalCase
- *
- * Transforms a sequence of words into pascal case.
- *
- * ## Example
- *
- * ```ts
- * str.pascalCase('hey') // 'Hey'
- * str.pascalCase('j S o N') // 'JSON'
- * str.pascalCase('j_S_o_N') // 'JSON'
- * str.pascalCase('j-S-o-N') // 'JSON'
- * ```
- */
-export function pascalCase(str: string): string {
-    if (str === "") {
-        return "";
-    }
-    return str
-        .split(/ |_|-/g)
-        .map((word) => word[0].toLocaleUpperCase() + word.slice(1).toLocaleLowerCase())
-        .join("");
-}
 
 /**
- * # random
- *
- * Returns a random character of the string.
- *
- * ## Example
- *
- * ```ts
- * str.random('') // ''
- * str.random('a') // 'a'
- * str.random('Rafael') // 'R' | 'a' | 'f' | 'a' | 'e' | 'l'
- * ```
- */
-export function random(str: string): string {
-    if (!str.length) {
-        return "";
-    }
-    return str[randomNum(0, str.length - 1)];
-}
-
-/**
- * # removeAccentuation
+ * # strRemoveAccents
  *
  * Remove accentuated characters.
  *
  * ## Example
  *
  * ```ts
- * str.removeAccentuation('loção') // loo
- * str.removeAccentuation('fianceé') // fiance
- * str.removeAccentuation('Äpfel') // pfel
- * str.removeAccentuation('këndon') // kndon
- * str.removeAccentuation('pálmafák') // plmafk
+ * strRemoveAccents("loção") // loo
+ * strRemoveAccents("fianceé") // fiance
+ * strRemoveAccents("Äpfel") // pfel
+ * strRemoveAccents("këndon") // kndon
+ * strRemoveAccents("pálmafák") // plmafk
  * ```
  */
-export function removeAccentuation(str: string): string {
-    return Array.from(str)
-        .filter((letter) => !accents.has(letter))
-        .join("");
+export function strRemoveAccents(str: string): string {
+    return Array.from(str).filter((letter) => !accents.has(letter)).join("");
 }
 
 /**
- * # replaceAccentuation
+ * # strReplaceAccents
  *
  * Replace accentuated characters by unaccentuated ones.
  *
  * ## Example
  *
  * ```ts
- * str.replaceAccentuation('loção') // locao
- * str.replaceAccentuation('fianceé') // fiancee
- * str.replaceAccentuation('Äpfel') // Apfel
- * str.replaceAccentuation('këndon') // kendon
- * str.replaceAccentuation('pálmafák') // palmafak
+ * strReplaceAccents("loção") // locao
+ * strReplaceAccents("fianceé") // fiancee
+ * strReplaceAccents("Äpfel") // Apfel
+ * strReplaceAccents("këndon") // kendon
+ * strReplaceAccents("pálmafák") // palmafak
  * ```
  */
-export function replaceAccentuation(str: string): string {
-    return Array.from(str)
-        .map((letter) => accents.get(letter) || letter)
-        .join("");
+export function strReplaceAccents(str: string): string {
+    return Array.from(str).map((letter) => accents.get(letter) || letter).join("");
 }
+
 /**
- * # snakeCase
+ * # strRandom
  *
- * Transforms a sequence of words into snake case.
+ * Returns a random character of the string.
  *
  * ## Example
  *
  * ```ts
- * str.snakeCase('hey') // 'hey'
- * str.snakeCase('j S o N') // 'j_s_o_n'
- * str.snakeCase('j_S_o_N') // 'j_s_o_n'
- * str.snakeCase('j-S-o-N') // 'j_s_o_n'
+ * strRandom("") // ""
+ * strRandom("a") // "a"
+ * strRandom("Rafael") // "R" | "a" | "f" | "a" | "e" | "l"
  * ```
  */
-export function snakeCase(str: string): string {
-    return str
-        .split(/ |_|-/g)
-        .map((word) => word.toLocaleLowerCase())
-        .join("_");
+export function strRandom(str: string): string {
+    if (!str.length) {
+        return "";
+    }
+    return str[numRandom(0, str.length - 1)];
 }

@@ -1,97 +1,25 @@
-import { std } from "../../std/mod.ts";
-
-type clampOptions = {
-    readonly min: number;
-} | {
-    readonly max: number;
-} | {
-    readonly min: number;
-    readonly max: number;
-};
+import { pipe } from "./standard.ts";
 
 /**
- * # clamp
- *
- * If min is passed and the number is smaller than min, returns min.
- *
- * If max is passed and the number is bigger than max, returns max.
- *
- * Returns the passed value otherwise.
- *
- * ## Example
- *
- * ```ts
- * num.clamp(77, { min: 99 }) // 99
- * num.clamp(10, { min: 8 }) // 10
- * ```
- *
- * ```ts
- * num.clamp(-10, { max: 5 }) // -10
- * num.clamp(846, { max: -1 }) // -1
- * ```
- *
- * ```ts
- * num.clamp(10, { min: 8, max: 12 }) // 10
- * num.clamp(10, { min: 0, max: 9 }) // 9
- * ```
- */
-export function clamp(num: number, options: clampOptions): number {
-    return std.pipe(
-        (current: number) => "min" in options ? Math.max(current, options.min) : current,
-        (current: number) => "max" in options ? Math.min(current, options.max) : current,
-    )(num);
-}
-
-/**
- * # compareAsc
- *
- * Compare the numbers in ascending order.
- *
- * ## Example
- *
- * ```ts
- * [1, 9, 2, 8, 3, 7, 4].sort(num.compareAsc) // [1, 2, 3, 4, 7, 8, 9]
- * ```
- */
-export function compareAsc(a: number, b: number): number {
-    return a > b ? 1 : -1;
-}
-
-/**
- * # compareDesc
- *
- * Compare the numbers in descending order.
- *
- * ## Example
- *
- * ```ts
- * [1, 9, 2, 8, 3, 7, 4].sort(num.compareDesc) // [1, 2, 3, 4, 7, 8, 9]
- * ```
- */
-export function compareDesc(a: number, b: number): number {
-    return a > b ? -1 : 1;
-}
-
-/**
- * # isValid
+ * # numIsValid
  *
  * Returns false for _undefined_, _null_ and _NaN_. Returns true otherwise.
  *
  * ## Example
  *
  * ```ts
- * num.isValid(undefined) // false
- * num.isValid(null) // false
- * num.isValid(NaN) // false
+ * numIsValid(undefined) // false
+ * numIsValid(null) // false
+ * numIsValid(NaN) // false
  * ```
  *
  * ```ts
- * num.isValid(0) // true
- * num.isValid(1) // true
- * num.isValid(Infinity) // true
+ * numIsValid(0) // true
+ * numIsValid(1) // true
+ * numIsValid(Infinity) // true
  * ```
  */
-export function isValid(num: number | undefined | null): boolean {
+export function numIsValid(num: number | undefined | null): boolean {
     if (typeof num !== "number") {
         return false;
     }
@@ -102,70 +30,95 @@ export function isValid(num: number | undefined | null): boolean {
 }
 
 /**
- * # lazyRange
+ * # numCompAsc
  *
- * Returns an iterable range from a number to another, respecting the step between each value.
+ * Compare the numbers in ascending order.
  *
  * ## Example
  *
  * ```ts
- * num.lazyRange(2, -1) // []
- * num.lazyRange(-1, 2, -1) // []
- * ```
- *
- * ```ts
- * num.lazyRange(-1, 2) // [-1, 0, 1, 2]
- * num.lazyRange(4, 5.1) // [4, 5]
- * num.lazyRange(2, -1, -1) // [2, 1, 0, -1]
- * num.lazyRange(10.2, 9, -0.2) // [10.2, 10, 9.8, 9.6, 9.4, 9.2, 9]
+ * [1, 9, 2, 8, 3, 7, 4].sort(numCompAsc) // [1, 2, 3, 4, 7, 8, 9]
  * ```
  */
-export function lazyRange(
-    from: number,
-    to: number,
-    step = 1,
-): IterableIterator<number> {
-    const length = std.pipe(
-        () => toFixed(to - from, 10),
-        (delta) => toFixed(delta / step, 10),
-        (deltaByStep) => Math.floor(deltaByStep) + 1,
-        (length) => Math.max(length, 0),
-    )(undefined);
-
-    let i = -1;
-    return {
-        next(): IteratorResult<number> {
-            i++;
-            const done = i + 1 > length;
-
-            return {
-                done,
-                value: done ? undefined! : i * step + from,
-            };
-        },
-        [Symbol.iterator](): IterableIterator<number> {
-            return this;
-        },
-    };
+export function numCompAsc(a: number, b: number): number {
+    return a > b ? 1 : -1;
 }
 
 /**
- * # normalizeZero
+ * # numCompDesc
+ *
+ * Compare the numbers in descending order.
+ *
+ * ## Example
+ *
+ * ```ts
+ * [1, 9, 2, 8, 3, 7, 4].sort(numCompDesc) // [1, 2, 3, 4, 7, 8, 9]
+ * ```
+ */
+export function numCompDesc(a: number, b: number): number {
+    return a > b ? -1 : 1;
+}
+
+type ClampOptions = {
+    readonly min: number;
+} | {
+    readonly max: number;
+} | {
+    readonly min: number;
+    readonly max: number;
+};
+
+/**
+ * # numClamp
+ *
+ * If min is passed and the number is smaller than min, returns min.
+ *
+ * If max is passed and the number is bigger than max, returns max.
+ *
+ * Returns the passed value otherwise.
+ *
+ * ## Example
+ *
+ * ```ts
+ * numClamp(77, { min: 99 }) // 99
+ * numClamp(10, { min: 8 }) // 10
+ * ```
+ *
+ * ```ts
+ * numClamp(-10, { max: 5 }) // -10
+ * numClamp(846, { max: -1 }) // -1
+ * ```
+ *
+ * ```ts
+ * numClamp(10, { min: 8, max: 12 }) // 10
+ * numClamp(10, { min: 0, max: 9 }) // 9
+ * ```
+ */
+export function numClamp(num: number, options: ClampOptions): number {
+    return pipe(
+        () => num,
+        (current: number) => "min" in options ? Math.max(current, options.min) : current,
+        (current: number) => "max" in options ? Math.min(current, options.max) : current,
+    )(undefined);
+}
+
+/**
+ * # numNormalizeZero
  *
  * If the passed value is -0, returns 0. Returns the passed value otherwise.
  *
  * ## Example
  *
  * ```ts
- * num.normalizeZero(-0) // 0
- * num.normalizeZero(0) // 0
+ * numNormalizeZero(-0) // 0
+ * numNormalizeZero(0) // 0
  * ```
  */
-export function normalizeZero(num: number): number {
+export function numNormalizeZero(num: number): number {
     return Object.is(num, -0) ? 0 : num;
 }
 
-type parseOptions = {
+type ParseOptions = {
     readonly prefix: string;
 } | {
     readonly suffix: string;
@@ -175,33 +128,30 @@ type parseOptions = {
 };
 
 /**
- * # parse
+ * # numParse
  *
- * Try to parse a number by the given prefix and suffix. If the prefix or suffix doesn't match the passed value, returns _undefined_.
+ * Try to parse a number by the given prefix and suffix. If the prefix or suffix doesn"t match the passed value, returns _undefined_.
  *
  * ## Example
  *
  * ```ts
- * num.parse(
- *     'I see penguins',
- *     { prefix: 'I see ', suffix: 'penguins' }
+ * numParse(
+ *     "I see penguins",
+ *     { prefix: "I see ", suffix: "penguins" }
  * ) // undefined
- * num.parse('US$4', { prefix: 'R$' }) // undefined
- * num.parse('4px', { suffix: 'rem' }) // undefined
+ * numParse("US$4", { prefix: "R$" }) // undefined
+ * numParse("4px", { suffix: "rem" }) // undefined
  * ```
  *
  * ```ts
- * num.parse('$100.00', { prefix: '$' }) // 100.00
- * num.parse(
- *     'width: 100px',
- *     { prefix: 'width: ', suffix: 'px' }
+ * numParse("$100.00", { prefix: "$" }) // 100.00
+ * numParse(
+ *     "width: 100px",
+ *     { prefix: "width: ", suffix: "px" }
  * ) // 100
  * ```
  */
-export function parse(
-    num: string,
-    options: parseOptions,
-): number | undefined {
+export function numParse(num: string, options: ParseOptions): number | undefined {
     if ("prefix" in options && num.indexOf(options.prefix) === -1) {
         return undefined;
     }
@@ -221,52 +171,28 @@ export function parse(
 }
 
 /**
- * # random
- *
- * Returns a random integer number between the range inclusively.
- *
- * ## Example
- *
- * ```ts
- * num.random(2, -1) // 2 | 1 | 0 | -1
- * num.random(-1, 2) // -1 | 0 | 1 | 2
- * num.random(5, 5) // 5
- * ```
- */
-export function random(
-    lower: number,
-    upper: number,
-): number {
-    return Math.floor(Math.random() * (upper - lower + 1)) + lower;
-}
-
-/**
- * # range
+ * # numRange
  *
  * Returns a range from a number to another, respecting the step between each value.
  *
  * ## Example
  *
  * ```ts
- * num.range(2, -1) // []
- * num.range(-1, 2, -1) // []
+ * numRange(2, -1) // []
+ * numRange(-1, 2, -1) // []
  * ```
  *
  * ```ts
- * num.range(-1, 2) // [-1, 0, 1, 2]
- * num.range(4, 5.1) // [4, 5]
- * num.range(2, -1, -1) // [2, 1, 0, -1]
- * num.range(10.2, 9, -0.2) // [10.2, 10, 9.8, 9.6, 9.4, 9.2, 9]
+ * numRange(-1, 2) // [-1, 0, 1, 2]
+ * numRange(4, 5.1) // [4, 5]
+ * numRange(2, -1, -1) // [2, 1, 0, -1]
+ * numRange(10.2, 9, -0.2) // [10.2, 10, 9.8, 9.6, 9.4, 9.2, 9]
  * ```
  */
-export function range(
-    from: number,
-    to: number,
-    step = 1,
-): readonly number[] {
-    const length = std.pipe(
-        () => toFixed(to - from, 10),
-        (delta) => toFixed(delta / step, 10),
+export function numRange(from: number, to: number, step = 1): readonly number[] {
+    const length = pipe(
+        () => numToFixed(to - from, 10),
+        (delta) => numToFixed(delta / step, 10),
         (deltaByStep) => Math.floor(deltaByStep) + 1,
         (length) => Math.max(length, 0),
     )(undefined);
@@ -277,18 +203,77 @@ export function range(
 }
 
 /**
- * # toFixed
+ * # numLazyRange
+ *
+ * Returns an iterable range from a number to another, respecting the step between each value.
+ *
+ * ## Example
+ *
+ * ```ts
+ * numLazyRange(2, -1) // []
+ * numLazyRange(-1, 2, -1) // []
+ * ```
+ *
+ * ```ts
+ * numLazyRange(-1, 2) // [-1, 0, 1, 2]
+ * numLazyRange(4, 5.1) // [4, 5]
+ * numLazyRange(2, -1, -1) // [2, 1, 0, -1]
+ * numLazyRange(10.2, 9, -0.2) // [10.2, 10, 9.8, 9.6, 9.4, 9.2, 9]
+ * ```
+ */
+export function numLazyRange(from: number, to: number, step = 1): IterableIterator<number> {
+    const length = pipe(
+        () => numToFixed(to - from, 10),
+        (delta) => numToFixed(delta / step, 10),
+        (deltaByStep) => Math.floor(deltaByStep) + 1,
+        (length) => Math.max(length, 0),
+    )(undefined);
+    let i = -1;
+    return {
+        next(): IteratorResult<number> {
+            i++;
+            const done = i + 1 > length;
+            return {
+                done,
+                value: done ? undefined! : i * step + from,
+            };
+        },
+        [Symbol.iterator](): IterableIterator<number> {
+            return this;
+        },
+    };
+}
+
+/**
+ * # numToFixed
  *
  * Wrapper of the toFixed function with a cast to number.
  *
  * ## Example
  *
  * ```ts
- * num.toFixed(3, 0) // 3
- * num.toFixed(1.1, 1) // 1.1
- * num.toFixed(10.10101, 1) // 10.1
+ * numToFixed(3, 0) // 3
+ * numToFixed(1.1, 1) // 1.1
+ * numToFixed(10.10101, 1) // 10.1
  * ```
  */
-export function toFixed(num: number, digits: number): number {
+export function numToFixed(num: number, digits: number): number {
     return Number(num.toFixed(digits));
+}
+
+/**
+ * # numRandom
+ *
+ * Returns a random integer number between the range inclusively.
+ *
+ * ## Example
+ *
+ * ```ts
+ * numRandom(2, -1) // 2 | 1 | 0 | -1
+ * numRandom(-1, 2) // -1 | 0 | 1 | 2
+ * numRandom(5, 5) // 5
+ * ```
+ */
+export function numRandom(lower: number, upper: number): number {
+    return Math.floor(Math.random() * (upper - lower + 1)) + lower;
 }

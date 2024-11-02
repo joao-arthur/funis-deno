@@ -1,20 +1,229 @@
-import { range } from "./number.ts";
+import { PlainObject } from "./object.ts";
 import { pipe } from "./standard.ts";
+import { numRandom, numRange } from "./number.ts";
 
 /**
- * # combinate
+ * # arrGroup
+ *
+ * Group the items by the returned value of the callback. Then return the groups in an array.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrGroup(
+ *     [
+ *         { type: "grass", name: "bulbasaur" },
+ *         { type: "fire", name: "charmander" },
+ *         { type: "water", name: "squirtle" },
+ *         { type: "bug", name: "caterpie" },
+ *         { type: "water", name: "psyduck" },
+ *     ],
+ *     item => item.type,
+ * )
+ * // [
+ * //     [{ type: "grass", name: "bulbasaur" }],
+ * //     [{ type: "fire", name: "charmander" }],
+ * //     [
+ * //         { type: "water", name: "squirtle" },
+ * //         { type: "water", name: "psyduck" },
+ * //     ],
+ * //     [{ type: "bug", name: "caterpie" }],
+ * // ]
+ * ```
+ */
+export function arrGroup<K, V>(arr: readonly V[], cb: (item: V) => K): readonly (readonly V[])[] {
+    return arrGroupToEntries(arr, cb).map(([, value]) => value);
+}
+
+/**
+ * # arrGroupToEntries
+ *
+ * Group the items by the returned value of the callback. Then return the groups in entries.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrGroupToEntries(
+ *     [
+ *         { type: "grass", name: "bulbasaur" },
+ *         { type: "fire", name: "charmander" },
+ *         { type: "water", name: "squirtle" },
+ *         { type: "bug", name: "caterpie" },
+ *         { type: "water", name: "psyduck" },
+ *     ],
+ *     item => item.type,
+ * )
+ * // [
+ * //     ["grass", [{ type: "grass", name: "bulbasaur" }]],
+ * //     ["fire", [{ type: "fire", name: "charmander" }]],
+ * //     ["water", [
+ * //         { type: "water", name: "squirtle" },
+ * //         { type: "water", name: "psyduck" },
+ * //     ]],
+ * //     ["bug", [{ type: "bug", name: "caterpie" }]],
+ * // ]
+ * ```
+ */
+export function arrGroupToEntries<K, V>(
+    arr: readonly V[],
+    cb: (item: V) => K,
+): readonly (readonly [K, readonly V[]])[] {
+    return pipe(
+        () => arr,
+        (items) => items.map(cb),
+        arrUnique,
+        (keys) => keys.map((key) => [key, arr.filter((item) => cb(item) === key)] as const),
+    )(undefined);
+}
+
+/**
+ * # arrGroupToMap
+ *
+ * Group the items by the returned value of the callback. Then return the groups in an Map instance.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrGroupToMap(
+ *     [
+ *         { type: "grass", name: "bulbasaur" },
+ *         { type: "fire", name: "charmander" },
+ *         { type: "water", name: "squirtle" },
+ *         { type: "bug", name: "caterpie" },
+ *         { type: "water", name: "psyduck" },
+ *     ],
+ *     item => item.type,
+ * )
+ * // {
+ * //     grass -> [{ type: "grass", name: "bulbasaur" }],
+ * //     fire -> [{ type: "fire", name: "charmander" }],
+ * //     water -> [
+ * //         { type: "water", name: "squirtle" },
+ * //         { type: "water", name: "psyduck" },
+ * //     ],
+ * //     bug -> [{ type: "bug", name: "caterpie" }],
+ * // }
+ * ```
+ */
+export function arrGroupToMap<K, V>(arr: readonly V[], cb: (item: V) => K): Map<K, readonly V[]> {
+    return new Map(arrGroupToEntries(arr, cb));
+}
+
+/**
+ * # arrGroupToObj
+ *
+ * Group the items by the returned value of the callback. Then return the groups in an plain object.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrGroupToObj(
+ *     [
+ *         { type: "grass", name: "bulbasaur" },
+ *         { type: "fire", name: "charmander" },
+ *         { type: "water", name: "squirtle" },
+ *         { type: "bug", name: "caterpie" },
+ *         { type: "water", name: "psyduck" },
+ *     ],
+ *     item => item.type,
+ * )
+ * // {
+ * //     grass: [{ type: "grass", name: "bulbasaur" }],
+ * //     fire: [{ type: "fire", name: "charmander" }],
+ * //     water: [
+ * //         { type: "water", name: "squirtle" },
+ * //         { type: "water", name: "psyduck" },
+ * //     ],
+ * //     bug: [{ type: "bug", name: "caterpie" }],
+ * // }
+ * ```
+ */
+export function arrGroupToObj<K, V>(arr: readonly V[], cb: (item: V) => K): PlainObject<V[]> {
+    return Object.fromEntries(arrGroupToEntries(arr, cb));
+}
+
+/**
+ * # arrUnique
+ *
+ * Returns an array with the unique values.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrUnique([1, 1, "john", "john"]) // [1, "john"]
+ * arrUnique([42]) // [42]
+ * ```
+ */
+export function arrUnique<const T>(arr: readonly T[]): readonly T[] {
+    return Array.from(new Set(arr));
+}
+
+/**
+ * # arrDisjoint
+ *
+ * Returns an array with the items that appear in only one array.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrDisjoint([[1, 2, 3], [1, 2, 3]]) // []
+ * ```
+ *
+ * ```ts
+ * arrDisjoint([[1]]) // [1]
+ * arrDisjoint([[false, true], []]) // [false, true]
+ * arrDisjoint([[4, 5, 6], [5, 6, 7]]) // [4, 7]
+ * arrDisjoint([
+ *     ["George", "Paul", "John", "Ringo", "George"],
+ *     ["Ringo"],
+ *     ["John"],
+ * ]) // ["George", "Paul"]
+ * ```
+ */
+export function arrDisjoint<const T>(arrs: readonly (readonly T[])[]): readonly T[] {
+    return arrUnique(arrs.flat()).filter((item) => arrOnce(arrs, (arr) => arr.includes(item)));
+}
+
+/**
+ * # arrIntersect
+ *
+ * Returns an array with the items that appear in every array.
+ *
+ * ## Example
+ *
+ * ```ts
+ * arrIntersect([[false, true], []]) // []
+ * arrIntersect([[1, 2, 3], [4, 5, 6]]) // []
+ * ```
+ *
+ * ```ts
+ * arrIntersect([[""]]) // [""]
+ * arrIntersect([[4, 5, 6], [5, 6, 7]]) // [5, 6]
+ * arrIntersect([
+ *     ["George", "Paul", "John", "Ringo", "Ringo"],
+ *     ["Ringo"],
+ *     ["Ringo", "John"],
+ * ]) // ["Ringo"]
+ * ```
+ */
+export function arrIntersect<const T>(arrs: readonly (readonly T[])[]): readonly T[] {
+    return arrUnique(arrs.flat()).filter((item) => arrs.every((arr) => arr.includes(item)));
+}
+
+/**
+ * # arrCombinate
  *
  * Returns an array with the non-repeating combination of the items.
  *
  * ## Example
  *
  * ```ts
- * arr.combinate([]) // []
- * arr.combinate([10]) // []
+ * arrCombinate([]) // []
+ * arrCombinate([10]) // []
  * ```
  *
  * ```ts
- * arr.combinate([10, 20, 30, 40, 50])
+ * arrCombinate([10, 20, 30, 40, 50])
  * // [
  * //     [10, 20],
  * //     [10, 30],
@@ -29,9 +238,7 @@ import { pipe } from "./standard.ts";
  * // ]
  * ```
  */
-export function combinate<const T>(
-    arr: readonly T[],
-): readonly (readonly [T, T])[] {
+export function arrCombinate<const T>(arr: readonly T[]): readonly (readonly [T, T])[] {
     const result: [T, T][] = [];
     for (let i = 0; i < arr.length - 1; i++) {
         for (let j = i + 1; j < arr.length; j++) {
@@ -42,245 +249,19 @@ export function combinate<const T>(
 }
 
 /**
- * # disjoint
- *
- * Returns an array with the items that appear in only one array.
- *
- * ## Example
- *
- * ```ts
- * arr.disjoint([[1, 2, 3], [1, 2, 3]]) // []
- * ```
- *
- * ```ts
- * arr.disjoint([[1]]) // [1]
- * arr.disjoint([[false, true], []]) // [false, true]
- * arr.disjoint([[4, 5, 6], [5, 6, 7]]) // [4, 7]
- * arr.disjoint([
- *     ['George', 'Paul', 'John', 'Ringo', 'George'],
- *     ['Ringo'],
- *     ['John'],
- * ]) // ['George', 'Paul']
- * ```
- */
-export function disjoint<const T>(
-    arrs: readonly (readonly T[])[],
-): readonly T[] {
-    return unique(arrs.flat())
-        .filter(
-            (item) => once(arrs, (arr) => arr.includes(item)),
-        );
-}
-
-/**
- * # groupToArray
- *
- * Group the items by the returned value of the callback. Then return the groups in an array.
- *
- * ## Example
- *
- * ```ts
- * arr.groupToArray(
- *     [
- *         { type: 'grass', name: 'bulbasaur' },
- *         { type: 'fire', name: 'charmander' },
- *         { type: 'water', name: 'squirtle' },
- *         { type: 'bug', name: 'caterpie' },
- *         { type: 'water', name: 'psyduck' },
- *     ],
- *     item => item.type,
- * )
- * // [
- * //     [{ type: 'grass', name: 'bulbasaur' }],
- * //     [{ type: 'fire', name: 'charmander' }],
- * //     [
- * //         { type: 'water', name: 'squirtle' },
- * //         { type: 'water', name: 'psyduck' },
- * //     ],
- * //     [{ type: 'bug', name: 'caterpie' }],
- * // ]
- * ```
- */
-export function groupToArray<K, V>(
-    arr: readonly V[],
-    cb: (item: V) => K,
-): readonly (readonly V[])[] {
-    return groupToEntries(arr, cb).map(([, value]) => value);
-}
-
-/**
- * # groupToEntries
- *
- * Group the items by the returned value of the callback. Then return the groups in entries.
- *
- * ## Example
- *
- * ```ts
- * arr.groupToEntries(
- *     [
- *         { type: 'grass', name: 'bulbasaur' },
- *         { type: 'fire', name: 'charmander' },
- *         { type: 'water', name: 'squirtle' },
- *         { type: 'bug', name: 'caterpie' },
- *         { type: 'water', name: 'psyduck' },
- *     ],
- *     item => item.type,
- * )
- * // [
- * //     ['grass', [{ type: 'grass', name: 'bulbasaur' }]],
- * //     ['fire', [{ type: 'fire', name: 'charmander' }]],
- * //     ['water', [
- * //         { type: 'water', name: 'squirtle' },
- * //         { type: 'water', name: 'psyduck' },
- * //     ]],
- * //     ['bug', [{ type: 'bug', name: 'caterpie' }]],
- * // ]
- * ```
- */
-export function groupToEntries<K, V>(
-    arr: readonly V[],
-    cb: (item: V) => K,
-): readonly (readonly [K, readonly V[]])[] {
-    return pipe(
-        () => arr,
-        (items) => items.map(cb),
-        unique,
-        (keys) =>
-            keys.map((key) =>
-                [
-                    key,
-                    arr.filter((item) => cb(item) === key),
-                ] as const
-            ),
-    )(undefined);
-}
-
-/**
- * # groupToMap
- *
- * Group the items by the returned value of the callback. Then return the groups in an Map instance.
- *
- * ## Example
- *
- * ```ts
- * arr.groupToMap(
- *     [
- *         { type: 'grass', name: 'bulbasaur' },
- *         { type: 'fire', name: 'charmander' },
- *         { type: 'water', name: 'squirtle' },
- *         { type: 'bug', name: 'caterpie' },
- *         { type: 'water', name: 'psyduck' },
- *     ],
- *     item => item.type,
- * )
- * // {
- * //     grass -> [{ type: 'grass', name: 'bulbasaur' }],
- * //     fire -> [{ type: 'fire', name: 'charmander' }],
- * //     water -> [
- * //         { type: 'water', name: 'squirtle' },
- * //         { type: 'water', name: 'psyduck' },
- * //     ],
- * //     bug -> [{ type: 'bug', name: 'caterpie' }],
- * // }
- * ```
- */
-export function groupToMap<K, V>(
-    arr: readonly V[],
-    cb: (item: V) => K,
-): Map<K, readonly V[]> {
-    return new Map(groupToEntries(arr, cb));
-}
-
-/**
- * # groupToObject
- *
- * Group the items by the returned value of the callback. Then return the groups in an plain object.
- *
- * ## Example
- *
- * ```ts
- * arr.groupToObject(
- *     [
- *         { type: 'grass', name: 'bulbasaur' },
- *         { type: 'fire', name: 'charmander' },
- *         { type: 'water', name: 'squirtle' },
- *         { type: 'bug', name: 'caterpie' },
- *         { type: 'water', name: 'psyduck' },
- *     ],
- *     item => item.type,
- * )
- * // {
- * //     grass: [{ type: 'grass', name: 'bulbasaur' }],
- * //     fire: [{ type: 'fire', name: 'charmander' }],
- * //     water: [
- * //         { type: 'water', name: 'squirtle' },
- * //         { type: 'water', name: 'psyduck' },
- * //     ],
- * //     bug: [{ type: 'bug', name: 'caterpie' }],
- * // }
- * ```
- */
-export function groupToObject<K, V>(
-    arr: readonly V[],
-    cb: (item: V) => K,
-): PlainObject<V[]> {
-    return Object.fromEntries(groupToEntries(arr, cb));
-}
-
-/**
- * # intersect
- *
- * Returns an array with the items that appear in every array.
- *
- * ## Example
- *
- * ```ts
- * arr.intersect([[false, true], []]) // []
- * arr.intersect([[1, 2, 3], [4, 5, 6]]) // []
- * ```
- *
- * ```ts
- * arr.intersect([['']]) // ['']
- * arr.intersect([[4, 5, 6], [5, 6, 7]]) // [5, 6]
- * arr.intersect([
- *     ['George', 'Paul', 'John', 'Ringo', 'Ringo'],
- *     ['Ringo'],
- *     ['Ringo', 'John'],
- * ]) // ['Ringo']
- * ```
- */
-export function intersect<const T>(
-    arrs: readonly (readonly T[])[],
-): readonly T[] {
-    return unique(arrs.flat())
-        .filter(
-            (item) => arrs.every((arr) => arr.includes(item)),
-        );
-}
-
-/**
- * # once
+ * # arrOnce
  *
  * Returns true if the callback returns true once. Returns false otherwise.
  *
  * ## Example
  *
  * ```ts
- * arr.once(
- *     ['Axl', 'Slash', 'Duff', 'Buckethead'],
- *     item => item === 'Roses'
- * ) // false
- * arr.once(
- *     ['Axl', 'Slash', 'Duff', 'Buckethead'],
- *     item => item === 'Buckethead'
- * ) // true
- * arr.once(
- *     ['Axl', 'Slash', 'Duff', 'Buckethead'],
- *     item => item.length > 2
- * ) // false
+ * arrOnce(["Axl", "Slash", "Duff", "Buckethead"], item => item === "Roses") // false
+ * arrOnce(["Axl", "Slash", "Duff", "Buckethead"], item => item === "Buckethead") // true
+ * arrOnce(["Axl", "Slash", "Duff", "Buckethead"], item => item.length > 2) // false
  * ```
  */
-export function once<const T>(
+export function arrOnce<const T>(
     arr: readonly T[],
     cb: (item: T, index: number, arr: readonly T[]) => boolean,
 ): boolean {
@@ -288,57 +269,38 @@ export function once<const T>(
 }
 
 /**
- * # random
- *
- * Returns a random character of the array.
- *
- * ## Example
- *
- * ```ts
- * arr.random([]) // undefined
- * ```
- *
- * ```ts
- * arr.random([true]) // [true]
- * arr.random(false, 0, 'n') // false | 0 | 'n'
- * ```
- */
-export function random<const T>(arr: readonly T[]): T | undefined {
-    return arr[num.random(0, arr.length - 1)];
-}
-
-/**
- * # repeat
+ * # arrRepeat
  *
  * Returns a new array with the all the items repeated the specified number of times.
  *
  * ## Example
  *
  * ```ts
- * repeat([0, 1, 2], 0) // []
- * repeat([0, 1, 2], 1) // [0, 1, 2]
- * repeat([0, 1, 2], 2) // [0, 1, 2, 0, 1, 2]
+ * arrRepeat([0, 1, 2], 0) // []
+ * arrRepeat([0, 1, 2], 1) // [0, 1, 2]
+ * arrRepeat([0, 1, 2], 2) // [0, 1, 2, 0, 1, 2]
  * ```
  */
-export function repeat<const T>(
-    arr: readonly T[],
-    times: number,
-): readonly T[] {
-    return range(1, times).flatMap(() => arr);
+export function arrRepeat<const T>(arr: readonly T[], times: number): readonly T[] {
+    return numRange(1, times).flatMap(() => arr);
 }
 
 /**
- * # unique
+ * # arrRandom
  *
- * Returns an array with the unique values.
+ * Returns a random item of the array.
  *
  * ## Example
  *
  * ```ts
- * arr.unique([1, 1, 'john', 'john']) // [1, 'john']
- * arr.unique([42]) // [42]
+ * arrRandom([]) // undefined
+ * ```
+ *
+ * ```ts
+ * arrRandom([true]) // [true]
+ * arrRandom(false, 0, "n") // false | 0 | "n"
  * ```
  */
-export function unique<const T>(arr: readonly T[]): readonly T[] {
-    return Array.from(new Set(arr));
+export function arrRandom<const T>(arr: readonly T[]): T | undefined {
+    return arr[numRandom(0, arr.length - 1)];
 }
