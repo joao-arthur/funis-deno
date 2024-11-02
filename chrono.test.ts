@@ -11,25 +11,28 @@ Deno.test("debounce", () => {
 
 Deno.test("debounce", () => {
     const emptyArr: string[] = [];
-    debounce(() => emptyArr.push("Salvator mundi"), 0)();
+    const timeoutId = debounce(() => emptyArr.push("Salvator mundi"), 0)();
     assertEquals(emptyArr, []);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("debounce", async () => {
     const emptyArr: string[] = [];
-    debounce(() => emptyArr.push("Salvator mundi"), 0)();
+    const timeoutId = debounce(() => emptyArr.push("Salvator mundi"), 0)();
     await resolveTimeout(undefined, 5);
     assertEquals(emptyArr, ["Salvator mundi"]);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("debounce", async () => {
     const emptyArr: string[] = [];
     const returnedFn = debounce(() => emptyArr.push("Salvator mundi"), 1);
-    returnedFn();
+    const timeoutId = returnedFn();
     returnedFn();
     returnedFn();
     await resolveTimeout(undefined, 10);
     assertEquals(emptyArr, ["Salvator mundi"]);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("debounce", async () => {
@@ -50,11 +53,12 @@ Deno.test("debounce", async () => {
 Deno.test("debounce", async () => {
     const emptyArr: string[] = [];
     const returnedFn = debounce(() => emptyArr.push("Salvator mundi"), 1);
-    returnedFn();
+    const timeoutId = returnedFn();
     await resolveTimeout(undefined, 5);
     returnedFn();
     await resolveTimeout(undefined, 5);
     assertEquals(emptyArr, ["Salvator mundi", "Salvator mundi"]);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("throttle", () => {
@@ -65,33 +69,37 @@ Deno.test("throttle", () => {
 
 Deno.test("throttle", () => {
     const emptyArr: string[] = [];
-    throttle(() => emptyArr.push("Salvator mundi"), 0)();
+    const timeoutId = throttle(() => emptyArr.push("Salvator mundi"), 0)();
     assertEquals(emptyArr, []);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("throttle", async () => {
     const emptyArr: string[] = [];
-    throttle(() => emptyArr.push("Salvator mundi"), 0)();
+    const timeoutId = throttle(() => emptyArr.push("Salvator mundi"), 0)();
     await resolveTimeout(undefined, 5);
     assertEquals(emptyArr, ["Salvator mundi"]);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("throttle", async () => {
     const emptyArr: string[] = [];
     const returnedFn = throttle(() => emptyArr.push("Salvator mundi"), 2);
-    returnedFn();
+    const timeoutId = returnedFn();
     returnedFn();
     returnedFn();
     await resolveTimeout(undefined, 10);
     assertEquals(emptyArr, ["Salvator mundi"]);
+    globalThis.clearTimeout(timeoutId);
 });
 
 Deno.test("throttle", async () => {
     const emptyArr: string[] = [];
     const returnedFn = throttle(() => emptyArr.push("Salvator mundi"), 1);
-    returnedFn();
+    const timeoutId = returnedFn();
     await resolveTimeout(undefined, 5);
     returnedFn();
     await resolveTimeout(undefined, 5);
     assertEquals(emptyArr, ["Salvator mundi", "Salvator mundi"]);
+    globalThis.clearTimeout(timeoutId);
 });

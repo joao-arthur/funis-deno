@@ -1,6 +1,6 @@
-import { mapEntries } from "./map.js";
-import { arrCombinate, arrGroup, arrUnique } from "./array.js";
-import { pipe, self } from "./standard.js";
+import { mapEntries } from "./map.ts";
+import { arrCombinate, arrGroup, arrUnique } from "./array.ts";
+import { pipe, self } from "./standard.ts";
 
 export type PlainObject<T = unknown> = {
     readonly [key: string | number]: T;
