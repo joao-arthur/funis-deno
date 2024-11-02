@@ -24,10 +24,7 @@ Deno.test("debounce", async () => {
 
 Deno.test("debounce", async () => {
     const emptyArr: string[] = [];
-    const returnedFn = debounce(
-        () => emptyArr.push("Salvator mundi"),
-        1,
-    );
+    const returnedFn = debounce(() => emptyArr.push("Salvator mundi"), 1);
     returnedFn();
     returnedFn();
     returnedFn();
@@ -37,10 +34,7 @@ Deno.test("debounce", async () => {
 
 Deno.test("debounce", async () => {
     const emptyArr: string[] = [];
-    const returnedFn = debounce(
-        () => emptyArr.push("Salvator mundi"),
-        30,
-    );
+    const returnedFn = debounce(() => emptyArr.push("Salvator mundi"), 30);
     returnedFn();
     await resolveTimeout(undefined, 8);
     returnedFn();
@@ -55,18 +49,12 @@ Deno.test("debounce", async () => {
 
 Deno.test("debounce", async () => {
     const emptyArr: string[] = [];
-    const returnedFn = debounce(
-        () => emptyArr.push("Salvator mundi"),
-        1,
-    );
+    const returnedFn = debounce(() => emptyArr.push("Salvator mundi"), 1);
     returnedFn();
     await resolveTimeout(undefined, 5);
     returnedFn();
     await resolveTimeout(undefined, 5);
-    assertEquals(emptyArr, [
-        "Salvator mundi",
-        "Salvator mundi",
-    ]);
+    assertEquals(emptyArr, ["Salvator mundi", "Salvator mundi"]);
 });
 
 Deno.test("throttle", () => {
@@ -90,10 +78,7 @@ Deno.test("throttle", async () => {
 
 Deno.test("throttle", async () => {
     const emptyArr: string[] = [];
-    const returnedFn = throttle(
-        () => emptyArr.push("Salvator mundi"),
-        2,
-    );
+    const returnedFn = throttle(() => emptyArr.push("Salvator mundi"), 2);
     returnedFn();
     returnedFn();
     returnedFn();
@@ -103,16 +88,10 @@ Deno.test("throttle", async () => {
 
 Deno.test("throttle", async () => {
     const emptyArr: string[] = [];
-    const returnedFn = throttle(
-        () => emptyArr.push("Salvator mundi"),
-        1,
-    );
+    const returnedFn = throttle(() => emptyArr.push("Salvator mundi"), 1);
     returnedFn();
     await resolveTimeout(undefined, 5);
     returnedFn();
     await resolveTimeout(undefined, 5);
-    assertEquals(emptyArr, [
-        "Salvator mundi",
-        "Salvator mundi",
-    ]);
+    assertEquals(emptyArr, ["Salvator mundi", "Salvator mundi"]);
 });

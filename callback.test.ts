@@ -7,6 +7,12 @@ Deno.test("eq", () => {
     assertEquals(eq(1)(2), false);
 });
 
+Deno.test("ne", () => {
+    assertEquals(ne(1)(0), true);
+    assertEquals(ne(1)(1), false);
+    assertEquals(ne(1)(2), true);
+});
+
 Deno.test("ge", () => {
     assertEquals(ge(1)(0), false);
     assertEquals(ge(1)(1), true);
@@ -29,10 +35,4 @@ Deno.test("lt", () => {
     assertEquals(lt(1)(0), true);
     assertEquals(lt(1)(1), false);
     assertEquals(lt(1)(2), false);
-});
-
-Deno.test("ne", () => {
-    assertEquals(ne(1)(0), true);
-    assertEquals(ne(1)(1), false);
-    assertEquals(ne(1)(2), true);
 });

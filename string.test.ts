@@ -1,329 +1,240 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
 import {
-    camelCase,
-    compareAsc,
-    compareDesc,
-    isValid,
-    kebabCase,
-    pascalCase,
-    random,
-    removeAccentuation,
-    replaceAccentuation,
-    snakeCase,
+    strCamelCase,
+    strCompAsc,
+    strCompDesc,
+    strIsValid,
+    strKebabCase,
+    strPascalCase,
+    strRandom,
+    strRemoveAccents,
+    strReplaceAccents,
+    strSnakeCase,
 } from "./string.ts";
 
-Deno.test("camelCase", () => {
-    assertEquals(camelCase(""), "");
+Deno.test("strIsValid", () => {
+    assertEquals(strIsValid(undefined), false);
+    assertEquals(strIsValid(null), false);
+    assertEquals(strIsValid(""), true);
+    assertEquals(strIsValid(" "), true);
+    assertEquals(strIsValid("Lorem ipsum"), true);
 });
 
-Deno.test("camelCase", () => {
-    assertEquals(camelCase("hey"), "hey");
-});
-
-Deno.test("camelCase", () => {
-    assertEquals(camelCase("j S o N"), "jSON");
-    assertEquals(camelCase("j_S_o_N"), "jSON");
-    assertEquals(camelCase("j-S-o-N"), "jSON");
-});
-
-Deno.test("camelCase", () => {
-    assertEquals(camelCase("hey Jo3"), "heyJo3");
-    assertEquals(camelCase("hey_Jo3"), "heyJo3");
-    assertEquals(camelCase("hey-Jo3"), "heyJo3");
-});
-
-Deno.test("compareAsc", () => {
+Deno.test("strCompAsc", () => {
     assertEquals(
-        ["q", "p", "w", "o", "Q", "P", "W", "O"].sort(compareAsc),
+        ["q", "p", "w", "o", "Q", "P", "W", "O"].sort(strCompAsc),
         ["O", "P", "Q", "W", "o", "p", "q", "w"],
     );
 });
 
-Deno.test("compareDesc", () => {
+Deno.test("strCompDesc", () => {
     assertEquals(
-        ["q", "p", "w", "o", "Q", "P", "W", "O"].sort(
-            compareDesc,
-        ),
+        ["q", "p", "w", "o", "Q", "P", "W", "O"].sort(strCompDesc),
         ["w", "q", "p", "o", "W", "Q", "P", "O"],
     );
 });
 
-Deno.test("isValid", () => {
-    assertEquals(isValid(undefined), false);
-    assertEquals(isValid(null), false);
+Deno.test("strCamelCase", () => {
+    assertEquals(strCamelCase(""), "");
+    assertEquals(strCamelCase("hey"), "hey");
+    assertEquals(strCamelCase("j S o N"), "jSON");
+    assertEquals(strCamelCase("j_S_o_N"), "jSON");
+    assertEquals(strCamelCase("j-S-o-N"), "jSON");
+    assertEquals(strCamelCase("hey Jo3"), "heyJo3");
+    assertEquals(strCamelCase("hey_Jo3"), "heyJo3");
+    assertEquals(strCamelCase("hey-Jo3"), "heyJo3");
 });
 
-Deno.test("isValid", () => {
-    assertEquals(isValid(""), true);
-    assertEquals(isValid(" "), true);
-    assertEquals(isValid("Lorem ipsum"), true);
+Deno.test("strKebabCase", () => {
+    assertEquals(strKebabCase(""), "");
+    assertEquals(strKebabCase("hey"), "hey");
+    assertEquals(strKebabCase("j S o N"), "j-s-o-n");
+    assertEquals(strKebabCase("j_S_o_N"), "j-s-o-n");
+    assertEquals(strKebabCase("j-S-o-N"), "j-s-o-n");
+    assertEquals(strKebabCase("hey Jo3"), "hey-jo3");
+    assertEquals(strKebabCase("hey_Jo3"), "hey-jo3");
+    assertEquals(strKebabCase("hey-Jo3"), "hey-jo3");
 });
 
-Deno.test("kebabCase", () => {
-    assertEquals(kebabCase(""), "");
+Deno.test("strPascalCase", () => {
+    assertEquals(strPascalCase(""), "");
+    assertEquals(strPascalCase("hey"), "Hey");
+    assertEquals(strPascalCase("j S o N"), "JSON");
+    assertEquals(strPascalCase("j_S_o_N"), "JSON");
+    assertEquals(strPascalCase("j-S-o-N"), "JSON");
+    assertEquals(strPascalCase("hey Jo3"), "HeyJo3");
+    assertEquals(strPascalCase("hey_Jo3"), "HeyJo3");
+    assertEquals(strPascalCase("hey-Jo3"), "HeyJo3");
 });
 
-Deno.test("kebabCase", () => {
-    assertEquals(kebabCase("hey"), "hey");
+Deno.test("strSnakeCase", () => {
+    assertEquals(strSnakeCase(""), "");
+    assertEquals(strSnakeCase("hey"), "hey");
+    assertEquals(strSnakeCase("j S o N"), "j_s_o_n");
+    assertEquals(strSnakeCase("j_S_o_N"), "j_s_o_n");
+    assertEquals(strSnakeCase("j-S-o-N"), "j_s_o_n");
+    assertEquals(strSnakeCase("hey Jo3"), "hey_jo3");
+    assertEquals(strSnakeCase("hey_Jo3"), "hey_jo3");
+    assertEquals(strSnakeCase("hey-Jo3"), "hey_jo3");
 });
 
-Deno.test("kebabCase", () => {
-    assertEquals(kebabCase("j S o N"), "j-s-o-n");
-    assertEquals(kebabCase("j_S_o_N"), "j-s-o-n");
-    assertEquals(kebabCase("j-S-o-N"), "j-s-o-n");
-});
-
-Deno.test("kebabCase", () => {
-    assertEquals(kebabCase("hey Jo3"), "hey-jo3");
-    assertEquals(kebabCase("hey_Jo3"), "hey-jo3");
-    assertEquals(kebabCase("hey-Jo3"), "hey-jo3");
-});
-
-Deno.test("pascalCase", () => {
-    assertEquals(pascalCase(""), "");
-});
-
-Deno.test("pascalCase", () => {
-    assertEquals(pascalCase("hey"), "Hey");
-});
-
-Deno.test("pascalCase", () => {
-    assertEquals(pascalCase("j S o N"), "JSON");
-    assertEquals(pascalCase("j_S_o_N"), "JSON");
-    assertEquals(pascalCase("j-S-o-N"), "JSON");
-});
-
-Deno.test("pascalCase", () => {
-    assertEquals(pascalCase("hey Jo3"), "HeyJo3");
-    assertEquals(pascalCase("hey_Jo3"), "HeyJo3");
-    assertEquals(pascalCase("hey-Jo3"), "HeyJo3");
-});
-
-Deno.test("random", () => {
-    assertEquals(random(""), "");
-    assertEquals(random("a"), "a");
-    assertEquals(random("b"), "b");
-    assertEquals(random("c"), "c");
-});
-
-Deno.test("random", () => {
-    assertEquals(random("Botticelli").length, 1);
-    assertEquals("Botticelli".includes(random("Botticelli")), true);
-    assertEquals(random("Michelangelo").length, 1);
+Deno.test("strRemoveAccents", () => {
+    assertEquals(strRemoveAccents("áéíóú"), "");
+    assertEquals(strRemoveAccents("àèìòù"), "");
+    assertEquals(strRemoveAccents("ãẽĩõũ"), "");
+    assertEquals(strRemoveAccents("äëïöü"), "");
+    assertEquals(strRemoveAccents("âêîôû"), "");
+    assertEquals(strRemoveAccents("ȁȅȉȍȕ"), "");
+    assertEquals(strRemoveAccents("āēīōū"), "");
+    assertEquals(strRemoveAccents("ăĕ"), "");
+    assertEquals(strRemoveAccents("ęį"), "");
+    assertEquals(strRemoveAccents("őű"), "");
+    assertEquals(strRemoveAccents("åů"), "");
+    assertEquals(strRemoveAccents("ė"), "");
+    assertEquals(strRemoveAccents("ě"), "");
+    assertEquals(strRemoveAccents("ø"), "");
+    assertEquals(strRemoveAccents("ǘ"), "");
+    assertEquals(strRemoveAccents("ǜ"), "");
+    assertEquals(strRemoveAccents("ÁÉÍÓÚ"), "");
+    assertEquals(strRemoveAccents("ÀÈÌÒÙ"), "");
+    assertEquals(strRemoveAccents("ÃẼĨÕŨ"), "");
+    assertEquals(strRemoveAccents("ÄËÏÖÜ"), "");
+    assertEquals(strRemoveAccents("ÂÊÎÔÛ"), "");
+    assertEquals(strRemoveAccents("ȀȄȈȌȔ"), "");
+    assertEquals(strRemoveAccents("ĀĒĪŌŪ"), "");
+    assertEquals(strRemoveAccents("ĂĔ"), "");
+    assertEquals(strRemoveAccents("ĘĮ"), "");
+    assertEquals(strRemoveAccents("ŐŰ"), "");
+    assertEquals(strRemoveAccents("ÅŮ"), "");
+    assertEquals(strRemoveAccents("Ė"), "");
+    assertEquals(strRemoveAccents("Ě"), "");
+    assertEquals(strRemoveAccents("Ø"), "");
+    assertEquals(strRemoveAccents("Ǘ"), "");
+    assertEquals(strRemoveAccents("Ǜ"), "");
+    assertEquals(strRemoveAccents("ćǵḱĺḿńṕŕśẃýź"), "");
+    assertEquals(strRemoveAccents("ĉĝĥĵŝŵŷẑ"), "");
+    assertEquals(strRemoveAccents("čňřšž"), "");
+    assertEquals(strRemoveAccents("ḧẗẅẍÿ"), "");
+    assertEquals(strRemoveAccents("ķļņț"), "");
+    assertEquals(strRemoveAccents("çḉşţ"), "");
+    assertEquals(strRemoveAccents("đħłŧ"), "");
+    assertEquals(strRemoveAccents("ǹẁỳ"), "");
+    assertEquals(strRemoveAccents("ñṽỹ"), "");
+    assertEquals(strRemoveAccents("ďľť"), "");
+    assertEquals(strRemoveAccents("ȑ"), "");
+    assertEquals(strRemoveAccents("ģ"), "");
+    assertEquals(strRemoveAccents("ğ"), "");
+    assertEquals(strRemoveAccents("ż"), "");
+    assertEquals(strRemoveAccents("ĆǴḰĹḾŃṔŔŚẂÝŹ"), "");
+    assertEquals(strRemoveAccents("ĈĜĤĴŜŴŶẐ"), "");
+    assertEquals(strRemoveAccents("ČĎŇŘŠŤŽ"), "");
+    assertEquals(strRemoveAccents("ḦẄẌŸ"), "");
+    assertEquals(strRemoveAccents("ÇḈŞŢ"), "");
+    assertEquals(strRemoveAccents("ĐĦŁŦ"), "");
+    assertEquals(strRemoveAccents("ǸẀỲ"), "");
+    assertEquals(strRemoveAccents("ÑṼỸ"), "");
+    assertEquals(strRemoveAccents("ĻŅȚ"), "");
+    assertEquals(strRemoveAccents("ĢĶ"), "");
+    assertEquals(strRemoveAccents("Ȑ"), "");
+    assertEquals(strRemoveAccents("Ğ"), "");
+    assertEquals(strRemoveAccents("Ľ"), "");
+    assertEquals(strRemoveAccents("Ż"), "");
     assertEquals(
-        "Michelangelo".includes(random("Michelangelo")),
-        true,
-    );
-});
-
-Deno.test("removeAccentuation", () => {
-    assertEquals(removeAccentuation("áéíóú"), "");
-    assertEquals(removeAccentuation("àèìòù"), "");
-    assertEquals(removeAccentuation("ãẽĩõũ"), "");
-    assertEquals(removeAccentuation("äëïöü"), "");
-    assertEquals(removeAccentuation("âêîôû"), "");
-    assertEquals(removeAccentuation("ȁȅȉȍȕ"), "");
-    assertEquals(removeAccentuation("āēīōū"), "");
-    assertEquals(removeAccentuation("ăĕ"), "");
-    assertEquals(removeAccentuation("ęį"), "");
-    assertEquals(removeAccentuation("őű"), "");
-    assertEquals(removeAccentuation("åů"), "");
-    assertEquals(removeAccentuation("ė"), "");
-    assertEquals(removeAccentuation("ě"), "");
-    assertEquals(removeAccentuation("ø"), "");
-    assertEquals(removeAccentuation("ǘ"), "");
-    assertEquals(removeAccentuation("ǜ"), "");
-});
-
-Deno.test("removeAccentuation", () => {
-    assertEquals(removeAccentuation("ÁÉÍÓÚ"), "");
-    assertEquals(removeAccentuation("ÀÈÌÒÙ"), "");
-    assertEquals(removeAccentuation("ÃẼĨÕŨ"), "");
-    assertEquals(removeAccentuation("ÄËÏÖÜ"), "");
-    assertEquals(removeAccentuation("ÂÊÎÔÛ"), "");
-    assertEquals(removeAccentuation("ȀȄȈȌȔ"), "");
-    assertEquals(removeAccentuation("ĀĒĪŌŪ"), "");
-    assertEquals(removeAccentuation("ĂĔ"), "");
-    assertEquals(removeAccentuation("ĘĮ"), "");
-    assertEquals(removeAccentuation("ŐŰ"), "");
-    assertEquals(removeAccentuation("ÅŮ"), "");
-    assertEquals(removeAccentuation("Ė"), "");
-    assertEquals(removeAccentuation("Ě"), "");
-    assertEquals(removeAccentuation("Ø"), "");
-    assertEquals(removeAccentuation("Ǘ"), "");
-    assertEquals(removeAccentuation("Ǜ"), "");
-});
-
-Deno.test("removeAccentuation", () => {
-    assertEquals(removeAccentuation("ćǵḱĺḿńṕŕśẃýź"), "");
-    assertEquals(removeAccentuation("ĉĝĥĵŝŵŷẑ"), "");
-    assertEquals(removeAccentuation("čňřšž"), "");
-    assertEquals(removeAccentuation("ḧẗẅẍÿ"), "");
-    assertEquals(removeAccentuation("ķļņț"), "");
-    assertEquals(removeAccentuation("çḉşţ"), "");
-    assertEquals(removeAccentuation("đħłŧ"), "");
-    assertEquals(removeAccentuation("ǹẁỳ"), "");
-    assertEquals(removeAccentuation("ñṽỹ"), "");
-    assertEquals(removeAccentuation("ďľť"), "");
-    assertEquals(removeAccentuation("ȑ"), "");
-    assertEquals(removeAccentuation("ģ"), "");
-    assertEquals(removeAccentuation("ğ"), "");
-    assertEquals(removeAccentuation("ż"), "");
-});
-
-Deno.test("removeAccentuation", () => {
-    assertEquals(removeAccentuation("ĆǴḰĹḾŃṔŔŚẂÝŹ"), "");
-    assertEquals(removeAccentuation("ĈĜĤĴŜŴŶẐ"), "");
-    assertEquals(removeAccentuation("ČĎŇŘŠŤŽ"), "");
-    assertEquals(removeAccentuation("ḦẄẌŸ"), "");
-    assertEquals(removeAccentuation("ÇḈŞŢ"), "");
-    assertEquals(removeAccentuation("ĐĦŁŦ"), "");
-    assertEquals(removeAccentuation("ǸẀỲ"), "");
-    assertEquals(removeAccentuation("ÑṼỸ"), "");
-    assertEquals(removeAccentuation("ĻŅȚ"), "");
-    assertEquals(removeAccentuation("ĢĶ"), "");
-    assertEquals(removeAccentuation("Ȑ"), "");
-    assertEquals(removeAccentuation("Ğ"), "");
-    assertEquals(removeAccentuation("Ľ"), "");
-    assertEquals(removeAccentuation("Ż"), "");
-});
-
-Deno.test("removeAccentuation", () => {
-    assertEquals(
-        removeAccentuation(
-            "abcdefghijklmnopqrstuvwyxz0123456789",
-        ),
+        strRemoveAccents("abcdefghijklmnopqrstuvwyxz0123456789"),
         "abcdefghijklmnopqrstuvwyxz0123456789",
     );
     assertEquals(
-        removeAccentuation(
-            "ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789",
-        ),
+        strRemoveAccents("ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789"),
         "ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789",
     );
     assertEquals(
-        removeAccentuation(
-            "¹²³£¢¬{[]}!@#$%¨&*()_+§/?°®←↓→þ´ªæßªĸ´~º«»©“”nµ",
-        ),
+        strRemoveAccents("¹²³£¢¬{[]}!@#$%¨&*()_+§/?°®←↓→þ´ªæßªĸ´~º«»©“”nµ"),
         "¹²³£¢¬{[]}!@#$%¨&*()_+§/?°®←↓→þ´ªæßªĸ´~º«»©“”nµ",
     );
 });
 
-Deno.test("replaceAccentuation", () => {
-    assertEquals(replaceAccentuation("áéíóú"), "aeiou");
-    assertEquals(replaceAccentuation("àèìòù"), "aeiou");
-    assertEquals(replaceAccentuation("ãẽĩõũ"), "aeiou");
-    assertEquals(replaceAccentuation("äëïöü"), "aeiou");
-    assertEquals(replaceAccentuation("âêîôû"), "aeiou");
-    assertEquals(replaceAccentuation("ȁȅȉȍȕ"), "aeiou");
-    assertEquals(replaceAccentuation("āēīōū"), "aeiou");
-    assertEquals(replaceAccentuation("ăĕ"), "ae");
-    assertEquals(replaceAccentuation("ęį"), "ei");
-    assertEquals(replaceAccentuation("őű"), "ou");
-    assertEquals(replaceAccentuation("åů"), "au");
-    assertEquals(replaceAccentuation("ė"), "e");
-    assertEquals(replaceAccentuation("ě"), "e");
-    assertEquals(replaceAccentuation("ø"), "o");
-    assertEquals(replaceAccentuation("ǘ"), "u");
-    assertEquals(replaceAccentuation("ǜ"), "u");
-});
-
-Deno.test("replaceAccentuation", () => {
-    assertEquals(replaceAccentuation("ÁÉÍÓÚ"), "AEIOU");
-    assertEquals(replaceAccentuation("ÀÈÌÒÙ"), "AEIOU");
-    assertEquals(replaceAccentuation("ÃẼĨÕŨ"), "AEIOU");
-    assertEquals(replaceAccentuation("ÄËÏÖÜ"), "AEIOU");
-    assertEquals(replaceAccentuation("ÂÊÎÔÛ"), "AEIOU");
-    assertEquals(replaceAccentuation("ȀȄȈȌȔ"), "AEIOU");
-    assertEquals(replaceAccentuation("ĀĒĪŌŪ"), "AEIOU");
-    assertEquals(replaceAccentuation("ĂĔ"), "AE");
-    assertEquals(replaceAccentuation("ĘĮ"), "EI");
-    assertEquals(replaceAccentuation("ŐŰ"), "OU");
-    assertEquals(replaceAccentuation("ÅŮ"), "AU");
-    assertEquals(replaceAccentuation("Ė"), "E");
-    assertEquals(replaceAccentuation("Ě"), "E");
-    assertEquals(replaceAccentuation("Ø"), "O");
-    assertEquals(replaceAccentuation("Ǘ"), "U");
-    assertEquals(replaceAccentuation("Ǜ"), "U");
-});
-
-Deno.test("replaceAccentuation", () => {
+Deno.test("strReplaceAccents", () => {
+    assertEquals(strReplaceAccents("áéíóú"), "aeiou");
+    assertEquals(strReplaceAccents("àèìòù"), "aeiou");
+    assertEquals(strReplaceAccents("ãẽĩõũ"), "aeiou");
+    assertEquals(strReplaceAccents("äëïöü"), "aeiou");
+    assertEquals(strReplaceAccents("âêîôû"), "aeiou");
+    assertEquals(strReplaceAccents("ȁȅȉȍȕ"), "aeiou");
+    assertEquals(strReplaceAccents("āēīōū"), "aeiou");
+    assertEquals(strReplaceAccents("ăĕ"), "ae");
+    assertEquals(strReplaceAccents("ęį"), "ei");
+    assertEquals(strReplaceAccents("őű"), "ou");
+    assertEquals(strReplaceAccents("åů"), "au");
+    assertEquals(strReplaceAccents("ė"), "e");
+    assertEquals(strReplaceAccents("ě"), "e");
+    assertEquals(strReplaceAccents("ø"), "o");
+    assertEquals(strReplaceAccents("ǘ"), "u");
+    assertEquals(strReplaceAccents("ǜ"), "u");
+    assertEquals(strReplaceAccents("ÁÉÍÓÚ"), "AEIOU");
+    assertEquals(strReplaceAccents("ÀÈÌÒÙ"), "AEIOU");
+    assertEquals(strReplaceAccents("ÃẼĨÕŨ"), "AEIOU");
+    assertEquals(strReplaceAccents("ÄËÏÖÜ"), "AEIOU");
+    assertEquals(strReplaceAccents("ÂÊÎÔÛ"), "AEIOU");
+    assertEquals(strReplaceAccents("ȀȄȈȌȔ"), "AEIOU");
+    assertEquals(strReplaceAccents("ĀĒĪŌŪ"), "AEIOU");
+    assertEquals(strReplaceAccents("ĂĔ"), "AE");
+    assertEquals(strReplaceAccents("ĘĮ"), "EI");
+    assertEquals(strReplaceAccents("ŐŰ"), "OU");
+    assertEquals(strReplaceAccents("ÅŮ"), "AU");
+    assertEquals(strReplaceAccents("Ė"), "E");
+    assertEquals(strReplaceAccents("Ě"), "E");
+    assertEquals(strReplaceAccents("Ø"), "O");
+    assertEquals(strReplaceAccents("Ǘ"), "U");
+    assertEquals(strReplaceAccents("Ǜ"), "U");
+    assertEquals(strReplaceAccents("ćǵḱĺḿńṕŕśẃýź"), "cgklmnprswyz");
+    assertEquals(strReplaceAccents("ĉĝĥĵŝŵŷẑ"), "cghjswyz");
+    assertEquals(strReplaceAccents("čňřšž"), "cnrsz");
+    assertEquals(strReplaceAccents("ḧẗẅẍÿ"), "htwxy");
+    assertEquals(strReplaceAccents("ķļņț"), "klnt");
+    assertEquals(strReplaceAccents("çḉşţ"), "ccst");
+    assertEquals(strReplaceAccents("đħłŧ"), "dhlt");
+    assertEquals(strReplaceAccents("ǹẁỳ"), "nwy");
+    assertEquals(strReplaceAccents("ñṽỹ"), "nvy");
+    assertEquals(strReplaceAccents("ďľť"), "dlt");
+    assertEquals(strReplaceAccents("ȑ"), "r");
+    assertEquals(strReplaceAccents("ģ"), "g");
+    assertEquals(strReplaceAccents("ğ"), "g");
+    assertEquals(strReplaceAccents("ż"), "z");
+    assertEquals(strReplaceAccents("ĆǴḰĹḾŃṔŔŚẂÝŹ"), "CGKLMNPRSWYZ");
+    assertEquals(strReplaceAccents("ĈĜĤĴŜŴŶẐ"), "CGHJSWYZ");
+    assertEquals(strReplaceAccents("ČĎŇŘŠŤŽ"), "CDNRSTZ");
+    assertEquals(strReplaceAccents("ḦẄẌŸ"), "HWXY");
+    assertEquals(strReplaceAccents("ÇḈŞŢ"), "CCST");
+    assertEquals(strReplaceAccents("ĐĦŁŦ"), "DHLT");
+    assertEquals(strReplaceAccents("ǸẀỲ"), "NWY");
+    assertEquals(strReplaceAccents("ÑṼỸ"), "NVY");
+    assertEquals(strReplaceAccents("ĻŅȚ"), "LNT");
+    assertEquals(strReplaceAccents("ĢĶ"), "GK");
+    assertEquals(strReplaceAccents("Ȑ"), "R");
+    assertEquals(strReplaceAccents("Ğ"), "G");
+    assertEquals(strReplaceAccents("Ľ"), "L");
+    assertEquals(strReplaceAccents("Ż"), "Z");
     assertEquals(
-        replaceAccentuation("ćǵḱĺḿńṕŕśẃýź"),
-        "cgklmnprswyz",
-    );
-    assertEquals(replaceAccentuation("ĉĝĥĵŝŵŷẑ"), "cghjswyz");
-    assertEquals(replaceAccentuation("čňřšž"), "cnrsz");
-    assertEquals(replaceAccentuation("ḧẗẅẍÿ"), "htwxy");
-    assertEquals(replaceAccentuation("ķļņț"), "klnt");
-    assertEquals(replaceAccentuation("çḉşţ"), "ccst");
-    assertEquals(replaceAccentuation("đħłŧ"), "dhlt");
-    assertEquals(replaceAccentuation("ǹẁỳ"), "nwy");
-    assertEquals(replaceAccentuation("ñṽỹ"), "nvy");
-    assertEquals(replaceAccentuation("ďľť"), "dlt");
-    assertEquals(replaceAccentuation("ȑ"), "r");
-    assertEquals(replaceAccentuation("ģ"), "g");
-    assertEquals(replaceAccentuation("ğ"), "g");
-    assertEquals(replaceAccentuation("ż"), "z");
-});
-
-Deno.test("replaceAccentuation", () => {
-    assertEquals(
-        replaceAccentuation("ĆǴḰĹḾŃṔŔŚẂÝŹ"),
-        "CGKLMNPRSWYZ",
-    );
-    assertEquals(replaceAccentuation("ĈĜĤĴŜŴŶẐ"), "CGHJSWYZ");
-    assertEquals(replaceAccentuation("ČĎŇŘŠŤŽ"), "CDNRSTZ");
-    assertEquals(replaceAccentuation("ḦẄẌŸ"), "HWXY");
-    assertEquals(replaceAccentuation("ÇḈŞŢ"), "CCST");
-    assertEquals(replaceAccentuation("ĐĦŁŦ"), "DHLT");
-    assertEquals(replaceAccentuation("ǸẀỲ"), "NWY");
-    assertEquals(replaceAccentuation("ÑṼỸ"), "NVY");
-    assertEquals(replaceAccentuation("ĻŅȚ"), "LNT");
-    assertEquals(replaceAccentuation("ĢĶ"), "GK");
-    assertEquals(replaceAccentuation("Ȑ"), "R");
-    assertEquals(replaceAccentuation("Ğ"), "G");
-    assertEquals(replaceAccentuation("Ľ"), "L");
-    assertEquals(replaceAccentuation("Ż"), "Z");
-});
-
-Deno.test("replaceAccentuation", () => {
-    assertEquals(
-        replaceAccentuation(
-            "abcdefghijklmnopqrstuvwyxz0123456789",
-        ),
+        strReplaceAccents("abcdefghijklmnopqrstuvwyxz0123456789"),
         "abcdefghijklmnopqrstuvwyxz0123456789",
     );
     assertEquals(
-        replaceAccentuation(
-            "ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789",
-        ),
+        strReplaceAccents("ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789"),
         "ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789",
     );
     assertEquals(
-        replaceAccentuation(
-            "¹²³£¢¬{[]}!@#$%¨&*()_+§/?°®←↓→þ´ªæßªĸ´~º«»©“”nµ",
-        ),
+        strReplaceAccents("¹²³£¢¬{[]}!@#$%¨&*()_+§/?°®←↓→þ´ªæßªĸ´~º«»©“”nµ"),
         "¹²³£¢¬{[]}!@#$%¨&*()_+§/?°®←↓→þ´ªæßªĸ´~º«»©“”nµ",
     );
 });
 
-Deno.test("snakeCase", () => {
-    assertEquals(snakeCase(""), "");
-});
-
-Deno.test("snakeCase", () => {
-    assertEquals(snakeCase("hey"), "hey");
-});
-
-Deno.test("snakeCase", () => {
-    assertEquals(snakeCase("j S o N"), "j_s_o_n");
-    assertEquals(snakeCase("j_S_o_N"), "j_s_o_n");
-    assertEquals(snakeCase("j-S-o-N"), "j_s_o_n");
-});
-
-Deno.test("snakeCase", () => {
-    assertEquals(snakeCase("hey Jo3"), "hey_jo3");
-    assertEquals(snakeCase("hey_Jo3"), "hey_jo3");
-    assertEquals(snakeCase("hey-Jo3"), "hey_jo3");
+Deno.test("strRandom", () => {
+    assertEquals(strRandom(""), "");
+    assertEquals(strRandom("a"), "a");
+    assertEquals(strRandom("b"), "b");
+    assertEquals(strRandom("c"), "c");
+    assertEquals(strRandom("Botticelli").length, 1);
+    assertEquals("Botticelli".includes(strRandom("Botticelli")), true);
+    assertEquals(strRandom("Michelangelo").length, 1);
+    assertEquals("Michelangelo".includes(strRandom("Michelangelo")), true);
 });

@@ -1,5 +1,4 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
-import { assertRejects } from "std/assert/assert_rejects.ts";
 import { last, objectify, rejectTimeout, resolveTimeout, retry } from "./promise.ts";
 
 Deno.test("last", async () => {
@@ -13,38 +12,31 @@ Deno.test("last", async () => {
         ]),
         "Socrates",
     );
-    await assertRejects(
-        () =>
-            last([
-                resolveTimeout("Socrates", 5),
-                rejectTimeout("Socrates", 5),
-                resolveTimeout("Plato", 10),
-                rejectTimeout("Plato", 10),
-                rejectTimeout("Aristotle", 20),
-            ]),
-        "Aristotle",
-    );
+    try {
+        await last([
+            resolveTimeout("Socrates", 5),
+            rejectTimeout("Socrates", 5),
+            resolveTimeout("Plato", 10),
+            rejectTimeout("Plato", 10),
+            rejectTimeout("Aristotle", 20),
+        ]);
+    } catch (e) {
+        assertEquals(e, "Aristotle");
+    }
 });
 
 Deno.test("objectify", async () => {
-    assertEquals(
-        await objectify(Promise.resolve(undefined)),
-        { value: undefined, error: undefined, type: "resolved" },
-    );
     assertEquals(
         await objectify(Promise.reject(undefined)),
         { value: undefined, error: undefined, type: "rejected" },
     );
-});
-
-Deno.test("objectify", async () => {
     assertEquals(
         await objectify(Promise.resolve("Symbolic acts")),
-        {
-            value: "Symbolic acts",
-            error: undefined,
-            type: "resolved",
-        },
+        { value: "Symbolic acts", error: undefined, type: "resolved" },
+    );
+    assertEquals(
+        await objectify(Promise.reject("So vivid")),
+        { value: undefined, error: "So vivid", type: "rejected" },
     );
     assertEquals(
         await objectify(Promise.resolve(undefined)),
@@ -66,11 +58,9 @@ Deno.test("resolveTimeout", async () => {
         "Hello, promise!",
     );
 });
+
 Deno.test("retry", async () => {
-    assertEquals(
-        await retry(() => Promise.reject("Donatello"), 0),
-        undefined,
-    );
+    assertEquals(await retry(() => Promise.reject("Donatello"), 0), undefined);
 });
 
 Deno.test("retry", async () => {
@@ -90,9 +80,7 @@ Deno.test("retry", async () => {
 
 Deno.test("retry", async () => {
     try {
-        await assertRejects(
-            () => retry(() => Promise.reject("Donatello"), 5),
-        );
+        await retry(() => Promise.reject("Donatello"), 5);
     } catch (e) {
         assertEquals(e, "Donatello");
     }

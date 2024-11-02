@@ -1,91 +1,33 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
 import {
-    combinate,
-    disjoint,
-    groupToArray,
-    groupToEntries,
-    groupToMap,
-    groupToObject,
-    intersect,
-    once,
-    random,
-    repeat,
-    unique,
+    arrCombinate,
+    arrDisjoint,
+    arrGroup,
+    arrGroupToEntries,
+    arrGroupToMap,
+    arrGroupToObj,
+    arrIntersect,
+    arrOnce,
+    arrRandom,
+    arrRepeat,
+    arrUnique,
 } from "./array.ts";
 
-Deno.test("combinate", () => {
-    assertEquals(combinate([]), []);
-    assertEquals(combinate([10]), []);
-});
-
-Deno.test("combinate", () => {
-    assertEquals(combinate([10, 20]), [[10, 20]]);
-    assertEquals(combinate([10, 20, 30, 40, 50]), [
-        [10, 20],
-        [10, 30],
-        [10, 40],
-        [10, 50],
-        [20, 30],
-        [20, 40],
-        [20, 50],
-        [30, 40],
-        [30, 50],
-        [40, 50],
-    ]);
-});
-
-Deno.test("disjoint", () => {
-    assertEquals(disjoint([]), []);
-    assertEquals(disjoint([[1, 2, 3], [1, 2, 3]]), []);
-});
-
-Deno.test("disjoint", () => {
-    assertEquals(disjoint([[1, 2, 3]]), [1, 2, 3]);
-    assertEquals(disjoint([[4, 5, 6], [5, 6, 7]]), [4, 7]);
+Deno.test("arrGroup", () => {
+    assertEquals(arrGroup([], (item) => item), []);
+    assertEquals(arrGroup([1, 2, 3], (item) => item), [[1], [2], [3]]);
+    assertEquals(arrGroup([1, 2, 3], (item) => item % 2), [[1, 3], [2]]);
+    assertEquals(arrGroup([1, 1, 2, 2, 3, 3], (item) => item), [[1, 1], [2, 2], [3, 3]]);
     assertEquals(
-        disjoint([
-            ["George", "Paul", "John", "Ringo", "George"],
-            ["Ringo"],
-            ["John"],
-        ]),
-        ["George", "Paul"],
-    );
-    assertEquals(disjoint([[false, true], []]), [false, true]);
-});
-
-Deno.test("groupToArray", () => {
-    assertEquals(groupToArray([], (item) => item), []);
-});
-
-Deno.test("groupToArray", () => {
-    assertEquals(
-        groupToArray([1, 2, 3], (item) => item),
-        [[1], [2], [3]],
-    );
-    assertEquals(
-        groupToArray([1, 2, 3], (item) => item % 2),
-        [[1, 3], [2]],
-    );
-    assertEquals(
-        groupToArray([1, 1, 2, 2, 3, 3], (item) => item),
-        [[1, 1], [2, 2], [3, 3]],
-    );
-    assertEquals(
-        groupToArray(
-            ["George", "Paul", "John", "Ringo"],
-            (item) => item === "Ringo",
-        ),
+        arrGroup(["George", "Paul", "John", "Ringo"], (item) => item === "Ringo"),
         [["George", "Paul", "John"], ["Ringo"]],
     );
     assertEquals(
-        groupToArray(
-            [false, true, false, true, false, true],
-            Boolean,
-        ),
+        arrGroup([false, true, false, true, false, true], Boolean),
         [[false, false, false], [true, true, true]],
     );
     assertEquals(
-        groupToArray(
+        arrGroup(
             [
                 { type: "grass", name: "bulbasaur" },
                 { type: "fire", name: "charmander" },
@@ -107,42 +49,24 @@ Deno.test("groupToArray", () => {
     );
 });
 
-Deno.test("groupToEntries", () => {
-    assertEquals(groupToEntries([], (item) => item), []);
-});
-
-Deno.test("groupToEntries", () => {
+Deno.test("arrGroupToEntries", () => {
+    assertEquals(arrGroupToEntries([], (item) => item), []);
+    assertEquals(arrGroupToEntries([1, 2, 3], (item) => item), [[1, [1]], [2, [2]], [3, [3]]]);
+    assertEquals(arrGroupToEntries([1, 2, 3], (item) => item % 2), [[1, [1, 3]], [0, [2]]]);
     assertEquals(
-        groupToEntries([1, 2, 3], (item) => item),
-        [[1, [1]], [2, [2]], [3, [3]]],
-    );
-    assertEquals(
-        groupToEntries([1, 2, 3], (item) => item % 2),
-        [[1, [1, 3]], [0, [2]]],
-    );
-    assertEquals(
-        groupToEntries([1, 1, 2, 2, 3, 3], (item) => item),
+        arrGroupToEntries([1, 1, 2, 2, 3, 3], (item) => item),
         [[1, [1, 1]], [2, [2, 2]], [3, [3, 3]]],
     );
     assertEquals(
-        groupToEntries(
-            ["George", "Paul", "John", "Ringo"],
-            (item) => item === "Ringo",
-        ),
+        arrGroupToEntries(["George", "Paul", "John", "Ringo"], (item) => item === "Ringo"),
         [[false, ["George", "Paul", "John"]], [true, ["Ringo"]]],
     );
     assertEquals(
-        groupToEntries(
-            [false, true, false, true, false, true],
-            Boolean,
-        ),
-        [
-            [false, [false, false, false]],
-            [true, [true, true, true]],
-        ],
+        arrGroupToEntries([false, true, false, true, false, true], Boolean),
+        [[false, [false, false, false]], [true, [true, true, true]]],
     );
     assertEquals(
-        groupToEntries(
+        arrGroupToEntries(
             [
                 { type: "grass", name: "bulbasaur" },
                 { type: "fire", name: "charmander" },
@@ -164,45 +88,24 @@ Deno.test("groupToEntries", () => {
     );
 });
 
-Deno.test("groupToMap", () => {
-    assertEquals(groupToMap([], (item) => item), new Map());
-});
-
-Deno.test("groupToMap", () => {
+Deno.test("arrGroupToMap", () => {
+    assertEquals(arrGroupToMap([], (item) => item), new Map());
+    assertEquals(arrGroupToMap([1, 2, 3], (item) => item), new Map([[1, [1]], [2, [2]], [3, [3]]]));
+    assertEquals(arrGroupToMap([1, 2, 3], (item) => item % 2), new Map([[1, [1, 3]], [0, [2]]]));
     assertEquals(
-        groupToMap([1, 2, 3], (item) => item),
-        new Map([[1, [1]], [2, [2]], [3, [3]]]),
-    );
-    assertEquals(
-        groupToMap([1, 2, 3], (item) => item % 2),
-        new Map([[1, [1, 3]], [0, [2]]]),
-    );
-    assertEquals(
-        groupToMap([1, 1, 2, 2, 3, 3], (item) => item),
+        arrGroupToMap([1, 1, 2, 2, 3, 3], (item) => item),
         new Map([[1, [1, 1]], [2, [2, 2]], [3, [3, 3]]]),
     );
     assertEquals(
-        groupToMap(
-            ["George", "Paul", "John", "Ringo"],
-            (item) => item === "Ringo",
-        ),
-        new Map([
-            [false, ["George", "Paul", "John"]],
-            [true, ["Ringo"]],
-        ]),
+        arrGroupToMap(["George", "Paul", "John", "Ringo"], (item) => item === "Ringo"),
+        new Map([[false, ["George", "Paul", "John"]], [true, ["Ringo"]]]),
     );
     assertEquals(
-        groupToMap(
-            [false, true, false, true, false, true],
-            Boolean,
-        ),
-        new Map([
-            [false, [false, false, false]],
-            [true, [true, true, true]],
-        ]),
+        arrGroupToMap([false, true, false, true, false, true], Boolean),
+        new Map([[false, [false, false, false]], [true, [true, true, true]]]),
     );
     assertEquals(
-        groupToMap(
+        arrGroupToMap(
             [
                 { type: "grass", name: "bulbasaur" },
                 { type: "fire", name: "charmander" },
@@ -224,45 +127,24 @@ Deno.test("groupToMap", () => {
     );
 });
 
-Deno.test("groupToObject", () => {
-    assertEquals(groupToObject([], (item) => item), {});
-});
-
-Deno.test("groupToObject", () => {
+Deno.test("arrGroupToObj", () => {
+    assertEquals(arrGroupToObj([], (item) => item), {});
+    assertEquals(arrGroupToObj([1, 2, 3], (item) => item), { 1: [1], 2: [2], 3: [3] });
+    assertEquals(arrGroupToObj([1, 2, 3], (item) => item % 2), { 1: [1, 3], 0: [2] });
     assertEquals(
-        groupToObject([1, 2, 3], (item) => item),
-        { 1: [1], 2: [2], 3: [3] },
-    );
-    assertEquals(
-        groupToObject([1, 2, 3], (item) => item % 2),
-        { 1: [1, 3], 0: [2] },
-    );
-    assertEquals(
-        groupToObject([1, 1, 2, 2, 3, 3], (item) => item),
+        arrGroupToObj([1, 1, 2, 2, 3, 3], (item) => item),
         { 1: [1, 1], 2: [2, 2], 3: [3, 3] },
     );
     assertEquals(
-        groupToObject(
-            ["George", "Paul", "John", "Ringo"],
-            (item) => item === "Ringo",
-        ),
-        {
-            false: ["George", "Paul", "John"],
-            true: ["Ringo"],
-        },
+        arrGroupToObj(["George", "Paul", "John", "Ringo"], (item) => item === "Ringo"),
+        { false: ["George", "Paul", "John"], true: ["Ringo"] },
     );
     assertEquals(
-        groupToObject(
-            [false, true, false, true, false, true],
-            Boolean,
-        ),
-        {
-            false: [false, false, false],
-            true: [true, true, true],
-        },
+        arrGroupToObj([false, true, false, true, false, true], Boolean),
+        { false: [false, false, false], true: [true, true, true] },
     );
     assertEquals(
-        groupToObject(
+        arrGroupToObj(
             [
                 { type: "grass", name: "bulbasaur" },
                 { type: "fire", name: "charmander" },
@@ -284,110 +166,94 @@ Deno.test("groupToObject", () => {
     );
 });
 
-Deno.test("intersect", () => {
-    assertEquals(intersect([[1, 2, 3], [4, 5, 6]]), []);
-    assertEquals(intersect([[false, true], []]), []);
-});
-
-Deno.test("intersect", () => {
-    assertEquals(intersect([[""]]), [""]);
-    assertEquals(intersect([[1]]), [1]);
-});
-
-Deno.test("intersect", () => {
-    assertEquals(intersect([[4, 5, 6], [5, 6, 7]]), [5, 6]);
+Deno.test("arrUnique", () => {
+    assertEquals(arrUnique([]), []);
+    assertEquals(arrUnique([1]), [1]);
+    const symbolValue = Symbol(1);
     assertEquals(
-        intersect([
-            ["George", "Paul", "John", "Ringo", "Ringo"],
-            ["Ringo"],
-            ["Ringo", "John"],
-        ]),
+        arrUnique([1, 1, "john", "john", true, false, true, symbolValue, symbolValue]),
+        [1, "john", true, false, symbolValue],
+    );
+});
+
+Deno.test("arrDisjoint", () => {
+    assertEquals(arrDisjoint([]), []);
+    assertEquals(arrDisjoint([[1, 2, 3], [1, 2, 3]]), []);
+    assertEquals(arrDisjoint([[1, 2, 3]]), [1, 2, 3]);
+    assertEquals(arrDisjoint([[4, 5, 6], [5, 6, 7]]), [4, 7]);
+    assertEquals(
+        arrDisjoint([["George", "Paul", "John", "Ringo", "George"], ["Ringo"], ["John"]]),
+        ["George", "Paul"],
+    );
+    assertEquals(arrDisjoint([[false, true], []]), [false, true]);
+});
+
+Deno.test("arrIntersect", () => {
+    assertEquals(arrIntersect([[1, 2, 3], [4, 5, 6]]), []);
+    assertEquals(arrIntersect([[false, true], []]), []);
+    assertEquals(arrIntersect([[""]]), [""]);
+    assertEquals(arrIntersect([[1]]), [1]);
+    assertEquals(arrIntersect([[4, 5, 6], [5, 6, 7]]), [5, 6]);
+    assertEquals(
+        arrIntersect([["George", "Paul", "John", "Ringo", "Ringo"], ["Ringo"], ["Ringo", "John"]]),
         ["Ringo"],
     );
 });
 
-Deno.test("once", () => {
+Deno.test("arrCombinate", () => {
+    assertEquals(arrCombinate([]), []);
+    assertEquals(arrCombinate([10]), []);
+    assertEquals(arrCombinate([10, 20]), [[10, 20]]);
     assertEquals(
-        once(
+        arrCombinate([10, 20, 30, 40, 50]),
+        [
+            [10, 20],
+            [10, 30],
+            [10, 40],
+            [10, 50],
+            [20, 30],
+            [20, 40],
+            [20, 50],
+            [30, 40],
+            [30, 50],
+            [40, 50],
+        ],
+    );
+});
+
+Deno.test("arrOnce", () => {
+    assertEquals(arrOnce([5, 3, 1], (item) => item < 0), false);
+    assertEquals(arrOnce([5, 3, 1], (item) => item > 0), false);
+    assertEquals(arrOnce([5, 3, 1], (item) => item > 4), true);
+    assertEquals(
+        arrOnce(["Axl", "Slash", "Duff", "Buckethead"], (item: unknown) => item === "Roses"),
+        false,
+    );
+    assertEquals(
+        arrOnce(["Axl", "Slash", "Duff", "Buckethead"], (item) => item === "Buckethead"),
+        true,
+    );
+    assertEquals(
+        arrOnce(
             ["Axl", "Slash", "Duff", "Buckethead"],
-            (item) => item.indexOf("Roses") >= 0,
+            (item) => ["Axl", "Slash", "Duff", "Buckethead"].includes(item),
         ),
         false,
     );
-    assertEquals(once([5, 3, 1], (item) => item < 0), false);
 });
 
-Deno.test("once", () => {
-    assertEquals(
-        once(
-            ["Axl", "Slash", "Duff", "Buckethead"],
-            (item) => item === "Buckethead",
-        ),
-        true,
-    );
-    assertEquals(once([5, 3, 1], (item) => item > 4), true);
+Deno.test("arrRepeat", () => {
+    assertEquals(arrRepeat([0, 1, 2], -1), []);
+    assertEquals(arrRepeat([0, 1, 2], 0), []);
+    assertEquals(arrRepeat([0, 1, 2], 1), [0, 1, 2]);
+    assertEquals(arrRepeat([0, 1, 2], 2), [0, 1, 2, 0, 1, 2]);
 });
 
-Deno.test("once", () => {
-    assertEquals(
-        once(
-            ["Axl", "Slash", "Duff", "Buckethead"],
-            (item) =>
-                [
-                    "Axl",
-                    "Slash",
-                    "Duff",
-                    "Buckethead",
-                ].includes(item),
-        ),
-        false,
-    );
-    assertEquals(once([5, 3, 1], (item) => item > 0), false);
-});
-
-Deno.test("random", () => {
-    assertEquals(random([]), undefined);
-});
-
-Deno.test("random", () => {
-    assertEquals(random([true]), true);
-    assertEquals(random([5]), 5);
-    assertEquals(random(["Memento mori"]), "Memento mori");
-});
-
-Deno.test("random", () => {
-    const result = random([true, false, 0, 1, "y", "n"]);
-    assertEquals(
-        [true, false, 0, 1, "y", "n"].includes(result!),
-        true,
-    );
-});
-
-const items = [0, 1, 2];
-
-Deno.test("repeat", () => {
-    assertEquals(repeat(items, -1), []);
-    assertEquals(repeat(items, 0), []);
-    assertEquals(repeat(items, 1), [0, 1, 2]);
-    assertEquals(repeat(items, 2), [0, 1, 2, 0, 1, 2]);
-});
-
-Deno.test("unique", () => {
-    assertEquals(unique([]), []);
-    assertEquals(unique([1]), [1]);
-    const symbolValue = Symbol(1);
-    assertEquals(
-        unique([
-            1,
-            1,
-            "john",
-            "john",
-            true,
-            false,
-            true,
-            symbolValue,
-            symbolValue,
-        ]),
-        [1, "john", true, false, symbolValue],
-    );
+Deno.test("arrRandom", () => {
+    assertEquals(arrRandom([]), undefined);
+    assertEquals(arrRandom([true]), true);
+    assertEquals(arrRandom([5]), 5);
+    assertEquals(arrRandom(["Memento mori"]), "Memento mori");
+    const result = arrRandom([true, false, 0, 1, "y", "n"]);
+    assertEquals([true, false, 0, 1, "y", "n"].includes(result!), true);
 });

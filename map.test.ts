@@ -1,46 +1,19 @@
 import { assertEquals } from "std/assert/assert_equals.ts";
 import {
-    entries,
-    fromObject,
-    fromObjectArray,
-    keys,
     mapEntries,
+    mapFromObj,
+    mapFromObjArr,
     mapKeys,
+    mapMapEntries,
+    mapMapKeys,
+    mapMapValues,
     mapValues,
-    values,
 } from "./map.ts";
 
-Deno.test("entries", () => {
-    assertEquals(entries(new Map()), []);
-});
-
-Deno.test("entries", () => {
+Deno.test("mapFromObj", () => {
+    assertEquals(mapFromObj({}), new Map([]));
     assertEquals(
-        entries(
-            new Map([
-                [1, { name: "Paul McCartney" }],
-                [2, { name: "George Harrison" }],
-            ]),
-        ),
-        [
-            [1, { name: "Paul McCartney" }],
-            [2, { name: "George Harrison" }],
-        ],
-    );
-});
-
-Deno.test("fromObject", () => {
-    assertEquals(fromObject({}), new Map([]));
-});
-
-Deno.test("fromObject", () => {
-    assertEquals(
-        fromObject({
-            Paul: "Bass",
-            John: "Guitar",
-            George: "Guitar",
-            Ringo: "Drums",
-        }),
+        mapFromObj({ Paul: "Bass", John: "Guitar", George: "Guitar", Ringo: "Drums" }),
         new Map(
             [
                 ["Paul", "Bass"],
@@ -52,16 +25,10 @@ Deno.test("fromObject", () => {
     );
 });
 
-Deno.test("fromObjectArray", () => {
+Deno.test("mapFromObjArr", () => {
+    assertEquals(mapFromObjArr([], "id"), new Map());
     assertEquals(
-        fromObjectArray([], "id"),
-        new Map(),
-    );
-});
-
-Deno.test("fromObjectArray", () => {
-    assertEquals(
-        fromObjectArray(
+        mapFromObjArr(
             [
                 { name: "Alex Lifeson", instrument: "Guitar" },
                 { name: "Geddy Lee", instrument: "Bass" },
@@ -76,25 +43,34 @@ Deno.test("fromObjectArray", () => {
         ]),
     );
 });
-Deno.test("keys", () => {
-    assertEquals(keys(new Map()), []);
+
+Deno.test("mapEntries", () => {
+    assertEquals(mapEntries(new Map()), []);
+    assertEquals(
+        mapEntries(new Map([[1, { name: "Paul McCartney" }], [2, { name: "George Harrison" }]])),
+        [[1, { name: "Paul McCartney" }], [2, { name: "George Harrison" }]],
+    );
 });
 
-Deno.test("keys", () => {
+Deno.test("mapKeys", () => {
+    assertEquals(mapKeys(new Map()), []);
     assertEquals(
-        keys(
-            new Map([
-                [1, { name: "Paul McCartney" }],
-                [2, { name: "George Harrison" }],
-            ]),
-        ),
+        mapKeys(new Map([[1, { name: "Paul McCartney" }], [2, { name: "George Harrison" }]])),
         [1, 2],
     );
 });
 
-Deno.test("mapEntries", () => {
+Deno.test("mapValues", () => {
+    assertEquals(mapValues(new Map()), []);
     assertEquals(
-        mapEntries(
+        mapValues(new Map([[1, { name: "Paul McCartney" }], [2, { name: "George Harrison" }]])),
+        [{ name: "Paul McCartney" }, { name: "George Harrison" }],
+    );
+});
+
+Deno.test("mapMapEntries", () => {
+    assertEquals(
+        mapMapEntries(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -111,7 +87,7 @@ Deno.test("mapEntries", () => {
         ]),
     );
     assertEquals(
-        mapEntries(
+        mapMapEntries(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -128,7 +104,7 @@ Deno.test("mapEntries", () => {
         ]),
     );
     assertEquals(
-        mapEntries(
+        mapMapEntries(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -141,9 +117,9 @@ Deno.test("mapEntries", () => {
     );
 });
 
-Deno.test("mapKeys", () => {
+Deno.test("mapMapKeys", () => {
     assertEquals(
-        mapKeys(
+        mapMapKeys(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -160,7 +136,7 @@ Deno.test("mapKeys", () => {
         ]),
     );
     assertEquals(
-        mapKeys(
+        mapMapKeys(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -177,7 +153,7 @@ Deno.test("mapKeys", () => {
         ]),
     );
     assertEquals(
-        mapKeys(
+        mapMapKeys(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -190,9 +166,9 @@ Deno.test("mapKeys", () => {
     );
 });
 
-Deno.test("mapValues", () => {
+Deno.test("mapMapValues", () => {
     assertEquals(
-        mapValues(
+        mapMapValues(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -209,7 +185,7 @@ Deno.test("mapValues", () => {
         ]),
     );
     assertEquals(
-        mapValues(
+        mapMapValues(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -226,7 +202,7 @@ Deno.test("mapValues", () => {
         ]),
     );
     assertEquals(
-        mapValues(
+        mapMapValues(
             new Map<string | number, string | number | boolean>([
                 ["a", 1],
                 ["b", "two"],
@@ -241,24 +217,5 @@ Deno.test("mapValues", () => {
             ["c", "v2_true_test"],
             [4, "v2_nada_test"],
         ]),
-    );
-});
-
-Deno.test("values", () => {
-    assertEquals(values(new Map()), []);
-});
-
-Deno.test("values", () => {
-    assertEquals(
-        values(
-            new Map([
-                [1, { name: "Paul McCartney" }],
-                [2, { name: "George Harrison" }],
-            ]),
-        ),
-        [
-            { name: "Paul McCartney" },
-            { name: "George Harrison" },
-        ],
     );
 });
