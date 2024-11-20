@@ -1,9 +1,15 @@
 {
     "fmt": {
+        "exclude": [
+            ".github/"
+        ],
         "lineWidth": 100,
         "indentWidth": 4
     },
     "lint": {
+        "exclude": [
+            ".github/"
+        ],
         "rules": {
             "include": [
                 "explicit-function-return-type",
