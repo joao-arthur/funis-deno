@@ -1,4 +1,4 @@
-import type { PlainObject} from './object.ts';
+import type { PlainObject } from "./object.ts";
 import { assertEquals } from "std/assert/assert_equals.ts";
 import {
     objDisjoint,

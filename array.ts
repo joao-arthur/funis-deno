@@ -1,4 +1,4 @@
-import type { PlainObject} from './object.ts';
+import type { PlainObject } from "./object.ts";
 import { pipe } from "./standard.ts";
 import { numRandom, numRange } from "./number.ts";
 
