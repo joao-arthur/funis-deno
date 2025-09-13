@@ -1,5 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
-import { assertNotEquals } from "std/assert/assert_not_equals.ts";
+import { assertEquals, assertNotEquals } from "@std/assert";
 import { resolveTimeout } from "./promise.ts";
 import { debounce, throttle } from "./chrono.ts";
 

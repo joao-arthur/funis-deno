@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert";
 import { last, objectify, rejectTimeout, resolveTimeout, retry } from "./promise.ts";
 
 Deno.test("last", async () => {

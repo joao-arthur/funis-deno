@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert";
 import { eq, ge, gt, le, lt, ne } from "./callback.ts";
 
 Deno.test("eq", () => {
