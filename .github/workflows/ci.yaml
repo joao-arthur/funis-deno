@@ -18,3 +18,5 @@ jobs:
       - run: deno test --coverage=coverage
       - run: deno coverage coverage --lcov --output=coverage.lcov
       - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
